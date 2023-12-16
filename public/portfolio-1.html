@@ -1,0 +1,155 @@
+<div
+	id="ajax-page"
+	class="ajax-page-content"
+>
+	<div class="ajax-page-wrapper">
+		<div class="ajax-page-nav">
+			<div class="nav-item ajax-page-prev-next">
+				<a
+					class="ajax-page-load"
+					href="portfolio-3.html"
+					><i class="lnr lnr-chevron-left"></i
+				></a>
+				<a
+					class="ajax-page-load"
+					href="portfolio-2.html"
+					><i class="lnr lnr-chevron-right"></i
+				></a>
+			</div>
+			<div class="nav-item ajax-page-close-button">
+				<a
+					id="ajax-page-close-button"
+					href="#"
+					><i class="lnr lnr-cross"></i
+				></a>
+			</div>
+		</div>
+
+		<div class="ajax-page-title">
+			<h1>Animeq Website</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-8 col-md-8 portfolio-block">
+				<div class="owl-carousel portfolio-page-carousel">
+					<div class="item">
+						<img
+							src="img/portfolio/full/animeq.jpeg"
+							alt=""
+						/>
+					</div>
+					<div class="item">
+						<img
+							src="img/portfolio/full/animeq2.jpeg"
+							alt=""
+						/>
+					</div>
+					<div class="item">
+						<img
+							src="img/portfolio/full/animeq3.jpeg"
+							alt=""
+						/>
+					</div>
+					<div class="item">
+						<img
+							src="img/portfolio/full/animeq4.jpeg"
+							alt=""
+						/>
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					jQuery(document).ready(function ($) {
+						$('.portfolio-page-carousel').imagesLoaded(function () {
+							$('.portfolio-page-carousel').owlCarousel({
+								smartSpeed: 1200,
+								items: 1,
+								loop: true,
+								dots: true,
+								nav: true,
+								navText: false,
+								margin: 10,
+								autoHeight: true,
+							})
+						})
+					})
+				</script>
+			</div>
+
+			<div class="col-sm-4 col-md-4 portfolio-block">
+				<!-- Project Description -->
+				<div class="project-description">
+					<div class="block-title">
+						<h3>Description</h3>
+					</div>
+					<ul class="project-general-info">
+						<li>
+							<p><i class="fa fa-user"></i> Kisnak Nugroho</p>
+						</li>
+						<li>
+							<p>
+								<i class="fa fa-globe"></i>
+								<a
+									href="animeq.vercel.app"
+									target="_blank"
+									>Animeq</a
+								>
+							</p>
+						</li>
+						<li>
+							<p><i class="fa fa-calendar"></i> 10 december, 2023</p>
+						</li>
+					</ul>
+
+					<p class="text-justify">
+						An anime database website , fetching data from Jikanmoe API. The
+						website features is popular anime, airing anime, upcoming anime,
+						detail anime include genre, trailer and characters.
+					</p>
+					<!-- /Project Description -->
+
+					<!-- Technology -->
+					<div class="tags-block">
+						<div class="block-title">
+							<h3>Technology</h3>
+						</div>
+						<ul class="tags">
+							<li><a>React.js (Vite)</a></li>
+							<li><a>Styled Components</a></li>
+							<li><a>React-router-dom</a></li>
+							<li><a>Font Awesome</a></li>
+						</ul>
+					</div>
+					<!-- /Technology -->
+
+					<!-- Share Buttons -->
+					<div class="btn-group share-buttons">
+						<div class="block-title">
+							<h3>Share</h3>
+						</div>
+						<a
+							href="#"
+							target="_blank"
+							class="btn"
+							><i class="fab fa-facebook-f"></i>
+						</a>
+						<a
+							href="#"
+							target="_blank"
+							class="btn"
+							><i class="fab fa-youtube"></i>
+						</a>
+						<a
+							href="#"
+							target="_blank"
+							class="btn"
+							><i class="fab fa-instagram"></i>
+						</a>
+					</div>
+					<!-- /Share Buttons -->
+				</div>
+				<!-- Project Description -->
+			</div>
+		</div>
+	</div>
+</div>
