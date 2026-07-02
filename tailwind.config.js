@@ -1,0 +1,120 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        'on-secondary-container':
+          'rgb(var(--color-on-secondary-container) / <alpha-value>)',
+        background: 'rgb(var(--color-background) / <alpha-value>)',
+        'on-secondary-fixed':
+          'rgb(var(--color-on-secondary-fixed) / <alpha-value>)',
+        'on-secondary-fixed-variant':
+          'rgb(var(--color-on-secondary-fixed-variant) / <alpha-value>)',
+        'tertiary-container':
+          'rgb(var(--color-tertiary-container) / <alpha-value>)',
+        'surface-variant': 'rgb(var(--color-surface-variant) / <alpha-value>)',
+        'on-primary': 'rgb(var(--color-on-primary) / <alpha-value>)',
+        'inverse-on-surface':
+          'rgb(var(--color-inverse-on-surface) / <alpha-value>)',
+        outline: 'rgb(var(--color-outline) / <alpha-value>)',
+        'surface-container-highest':
+          'rgb(var(--color-surface-container-highest) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        'primary-fixed-dim':
+          'rgb(var(--color-primary-fixed-dim) / <alpha-value>)',
+        'inverse-surface': 'rgb(var(--color-inverse-surface) / <alpha-value>)',
+        'outline-variant': 'rgb(var(--color-outline-variant) / <alpha-value>)',
+        'on-tertiary-fixed':
+          'rgb(var(--color-on-tertiary-fixed) / <alpha-value>)',
+        'on-surface-variant':
+          'rgb(var(--color-on-surface-variant) / <alpha-value>)',
+        'on-primary-fixed':
+          'rgb(var(--color-on-primary-fixed) / <alpha-value>)',
+        'surface-bright': 'rgb(var(--color-surface-bright) / <alpha-value>)',
+        'on-tertiary-fixed-variant':
+          'rgb(var(--color-on-tertiary-fixed-variant) / <alpha-value>)',
+        'secondary-fixed': 'rgb(var(--color-secondary-fixed) / <alpha-value>)',
+        'on-tertiary': 'rgb(var(--color-on-tertiary) / <alpha-value>)',
+        'surface-container-high':
+          'rgb(var(--color-surface-container-high) / <alpha-value>)',
+        'surface-container':
+          'rgb(var(--color-surface-container) / <alpha-value>)',
+        'on-primary-container':
+          'rgb(var(--color-on-primary-container) / <alpha-value>)',
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        'on-background': 'rgb(var(--color-on-background) / <alpha-value>)',
+        'on-error-container':
+          'rgb(var(--color-on-error-container) / <alpha-value>)',
+        'primary-container':
+          'rgb(var(--color-primary-container) / <alpha-value>)',
+        'tertiary-fixed': 'rgb(var(--color-tertiary-fixed) / <alpha-value>)',
+        'on-secondary': 'rgb(var(--color-on-secondary) / <alpha-value>)',
+        'inverse-primary': 'rgb(var(--color-inverse-primary) / <alpha-value>)',
+        'surface-container-lowest':
+          'rgb(var(--color-surface-container-lowest) / <alpha-value>)',
+        'error-container': 'rgb(var(--color-error-container) / <alpha-value>)',
+        'on-primary-fixed-variant':
+          'rgb(var(--color-on-primary-fixed-variant) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+        'on-error': 'rgb(var(--color-on-error) / <alpha-value>)',
+        tertiary: 'rgb(var(--color-tertiary) / <alpha-value>)',
+        'secondary-container':
+          'rgb(var(--color-secondary-container) / <alpha-value>)',
+        error: 'rgb(var(--color-error) / <alpha-value>)',
+        'secondary-fixed-dim':
+          'rgb(var(--color-secondary-fixed-dim) / <alpha-value>)',
+        'tertiary-fixed-dim':
+          'rgb(var(--color-tertiary-fixed-dim) / <alpha-value>)',
+        'surface-dim': 'rgb(var(--color-surface-dim) / <alpha-value>)',
+        'primary-fixed': 'rgb(var(--color-primary-fixed) / <alpha-value>)',
+        'surface-tint': 'rgb(var(--color-surface-tint) / <alpha-value>)',
+        'on-surface': 'rgb(var(--color-on-surface) / <alpha-value>)',
+        'on-tertiary-container':
+          'rgb(var(--color-on-tertiary-container) / <alpha-value>)',
+        'surface-container-low':
+          'rgb(var(--color-surface-container-low) / <alpha-value>)',
+      },
+      borderRadius: {
+        DEFAULT: '0.125rem',
+        lg: '0.25rem',
+        xl: '0.5rem',
+        full: '0.75rem',
+      },
+      spacing: {
+        'margin-desktop': '2rem',
+        'margin-mobile': '1rem',
+        'stack-gap': '0.5rem',
+        gutter: '1rem',
+        'container-max': '1440px',
+        'sidebar-width': '260px',
+      },
+      fontFamily: {
+        'body-md': ['Inter'],
+        'code-sm': ['JetBrains Mono'],
+        'body-lg': ['Inter'],
+        'label-caps': ['JetBrains Mono'],
+        'headline-md': ['JetBrains Mono'],
+        'headline-sm': ['JetBrains Mono'],
+        'display-lg': ['JetBrains Mono'],
+      },
+      fontSize: {
+        'body-md': ['14px', { lineHeight: '1.5', fontWeight: '400' }],
+        'code-sm': ['13px', { lineHeight: '1.5', fontWeight: '450' }],
+        'body-lg': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+        'label-caps': [
+          '12px',
+          { lineHeight: '1', letterSpacing: '0.05em', fontWeight: '700' },
+        ],
+        'headline-md': ['24px', { lineHeight: '1.2', fontWeight: '600' }],
+        'headline-sm': ['18px', { lineHeight: '1.4', fontWeight: '600' }],
+        'display-lg': [
+          '48px',
+          { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' },
+        ],
+      },
+    },
+  },
+  plugins: [],
+}
