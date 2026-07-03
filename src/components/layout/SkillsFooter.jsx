@@ -3,7 +3,7 @@ const SkillsFooter = () => {
     <footer className='hidden md:flex fixed bottom-0 left-0 w-full h-8 items-center justify-between px-4 z-50 bg-surface-container-lowest border-t border-outline-variant font-code-sm text-code-sm text-on-surface-variant'>
       <div className='flex items-center gap-4'>
         <span className='font-label-caps text-label-caps text-tertiary'>
-          Built with Precision © 2024
+          Built with Coffee © 2026
         </span>
         <div className='flex items-center gap-4 border-l border-outline-variant pl-4'>
           <span className='hover:text-tertiary cursor-pointer'>

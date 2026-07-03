@@ -1,7 +1,8 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { terminalLines, profile } from '../data/homeData.js'
 import { projects } from '../data/projectsData.js'
 import ProjectCard from '../components/ProjectCard.jsx'
+import GithubActivity from '../components/GithubActivity.jsx'
 
 const TYPE_SPEED_MS = 40
 const LINE_PAUSE_MS = 200
@@ -106,46 +107,6 @@ const ProfileCard = () => {
           </span>
           HIRE ME
         </button>
-      </div>
-    </div>
-  )
-}
-
-const GithubActivity = () => {
-  const squares = useMemo(() => {
-    return Array.from({ length: 45 }, () => {
-      const r = Math.random()
-      if (r > 0.7) return 'bg-primary'
-      if (r > 0.4) return 'bg-primary/20'
-      return 'bg-surface-variant'
-    })
-  }, [])
-
-  return (
-    <div className='col-span-12 mt-8 bg-surface-container-lowest rounded-lg border border-outline-variant p-4 smooth-transition hover:border-tertiary/30'>
-      <div className='flex items-center justify-between mb-4 flex-wrap gap-2'>
-        <div className='flex items-center gap-4'>
-          <span className='font-label-caps text-label-caps text-on-surface-variant'>
-            GITHUB CONTRIBUTIONS
-          </span>
-          <div className='flex gap-1'>
-            <div className='w-3 h-3 bg-surface-variant rounded-sm'></div>
-            <div className='w-3 h-3 bg-primary/40 rounded-sm'></div>
-            <div className='w-3 h-3 bg-primary/60 rounded-sm'></div>
-            <div className='w-3 h-3 bg-primary rounded-sm'></div>
-          </div>
-        </div>
-        <span className='font-code-sm text-code-sm text-tertiary'>
-          2,042 commits in 2024
-        </span>
-      </div>
-      <div className='flex gap-1 overflow-x-auto pb-2'>
-        {squares.map((cls, i) => (
-          <div
-            key={i}
-            className={`w-4 h-4 rounded-sm flex-shrink-0 smooth-transition hover:scale-125 hover:z-10 cursor-crosshair ${cls}`}
-          ></div>
-        ))}
       </div>
     </div>
   )

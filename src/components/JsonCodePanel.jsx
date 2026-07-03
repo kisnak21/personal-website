@@ -10,7 +10,9 @@ const buildLines = (projects) => {
 
   projects.forEach((p, i) => {
     const isLast = i === projects.length - 1
+
     lines.push([{ text: '    {', className: 'text-on-surface' }])
+
     lines.push([
       { text: '      ', className: '' },
       { text: '"id"', className: 'text-tertiary' },
@@ -18,6 +20,7 @@ const buildLines = (projects) => {
       { text: String(i + 1), className: 'text-secondary' },
       { text: ',', className: '' },
     ])
+
     lines.push([
       { text: '      ', className: '' },
       { text: '"title"', className: 'text-tertiary' },
@@ -26,20 +29,24 @@ const buildLines = (projects) => {
       { text: ',', className: '' },
     ])
 
-    const stackSegs = [
+    lines.push([
       { text: '      ', className: '' },
       { text: '"techStack"', className: 'text-tertiary' },
-      { text: ': ', className: '' },
-      { text: '[', className: 'text-on-surface' },
-    ]
-    p.techStack.forEach((s, si) => {
-      stackSegs.push({ text: `"${s}"`, className: 'text-primary' })
-      if (si < p.techStack.length - 1)
-        stackSegs.push({ text: ', ', className: '' })
-    })
-    stackSegs.push({ text: ']', className: 'text-on-surface' })
-    lines.push(stackSegs)
+      { text: ': [', className: '' },
+    ])
 
+    p.techStack.forEach((tech, ti) => {
+      const isLastTech = ti === p.techStack.length - 1
+      lines.push([
+        { text: '        ', className: '' },
+        {
+          text: `"${tech}"${isLastTech ? '' : ','}`,
+          className: 'text-primary',
+        },
+      ])
+    })
+
+    lines.push([{ text: '      ]', className: 'text-on-surface' }])
     lines.push([
       { text: `    }${isLast ? '' : ','}`, className: 'text-on-surface' },
     ])

@@ -4,21 +4,16 @@ export const contactIntro =
 export const socialProfiles = [
   {
     label: 'GitHub',
-    url: 'github.com/kresna-s',
-    href: 'https://github.com/kresna-s',
+    url: 'github.com/kisnak21',
+    href: 'https://github.com/kisnak21',
   },
   {
     label: 'LinkedIn',
-    url: 'linkedin.com/in/kresna-s',
-    href: 'https://linkedin.com/in/kresna-s',
-  },
-  {
-    label: 'Twitter',
-    url: 'twitter.com/kresna_dev',
-    href: 'https://twitter.com/kresna_dev',
+    url: 'linkedin.com/in/kresnasatyanugroho',
+    href: 'https://linkedin.com/in/kresnasatyanugroho',
   },
 ]
 
-export const directEmail = 'hello@kresnas.dev'
+export const directEmail = 'krisnastya21@gmail.com'
 
-export const meta = { lastEdited: '2024-05-12', views: '1.2k' }
+export const meta = { lastEdited: '2026-05-12', views: '1.2k' }
