@@ -1,10 +1,16 @@
 import { projects as projectsList } from '../data/projectsData.js'
+import SEO from '../components/SEO.jsx'
 import JsonCodePanel from '../components/JsonCodePanel.jsx'
 import ProjectFileCard from '../components/ProjectFileCard.jsx'
 
 const Projects = () => {
   return (
     <>
+      <SEO
+        title='Projects'
+        description='Browse through my development projects showcasing React, Next.js, Node.js, and full-stack applications.'
+        url='/projects'
+      />
       {/* Editor Tab Strip — full width, outside the padded container */}
       <div className='flex bg-surface-container-low border-b border-outline-variant h-10 items-center px-margin-mobile md:px-margin-desktop'>
         <div className='bg-surface px-4 h-full flex items-center gap-2 border-r border-outline-variant border-t-2 border-t-primary'>

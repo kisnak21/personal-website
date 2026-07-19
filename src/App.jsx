@@ -1,20 +1,28 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout.jsx'
-import Home from './pages/Home.jsx'
-import Projects from './pages/Projects.jsx'
-import Skills from './pages/Skills.jsx'
-import Contact from './pages/Contact.jsx'
+import Loading from './components/Loading.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
+
+const Home = lazy(() => import('./pages/Home.jsx'))
+const Projects = lazy(() => import('./pages/Projects.jsx'))
+const Skills = lazy(() => import('./pages/Skills.jsx'))
+const Contact = lazy(() => import('./pages/Contact.jsx'))
 
 function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path='/' element={<Home />} />
-        <Route path='/projects' element={<Projects />} />
-        <Route path='/skills' element={<Skills />} />
-        <Route path='/contact' element={<Contact />} />
-      </Route>
-    </Routes>
+    <ErrorBoundary>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/projects' element={<Projects />} />
+            <Route path='/skills' element={<Skills />} />
+            <Route path='/contact' element={<Contact />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 

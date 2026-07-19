@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { terminalLines, profile } from '../data/homeData.js'
 import { projects } from '../data/projectsData.js'
+import SEO from '../components/SEO.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 import GithubActivity from '../components/GithubActivity.jsx'
 
@@ -114,43 +115,51 @@ const ProfileCard = () => {
 
 const Home = () => {
   return (
-    <div className='max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-8'>
-      <section className='mb-12'>
-        <h1 className='font-headline-md text-headline-md text-primary mb-2'>
-          ## Welcome to my workspace! 👋
-        </h1>
-        <p className='font-body-lg text-body-lg text-on-surface-variant max-w-2xl'>
-          I'm Kresna, an{' '}
-          <span className='text-tertiary font-semibold'>ICT Teacher</span>{' '}
-          pivoting into{' '}
-          <span className='text-tertiary font-semibold'>
-            Full-Stack Development
-          </span>
-          . Bridging the gap between educational logic and scalable engineering.
-        </p>
-      </section>
+    <>
+      <SEO
+        title='Home'
+        description='Kresna S. Nugroho - ICT Teacher pivoting into full-stack development. Exploring React, Next.js, Node.js, and distributed systems.'
+        url='/'
+      />
+      <div className='max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-8'>
+        <section className='mb-12'>
+          <h1 className='font-headline-md text-headline-md text-primary mb-2'>
+            ## Welcome to my workspace! 👋
+          </h1>
+          <p className='font-body-lg text-body-lg text-on-surface-variant max-w-2xl'>
+            I'm Kresna, an{' '}
+            <span className='text-tertiary font-semibold'>ICT Teacher</span>{' '}
+            pivoting into{' '}
+            <span className='text-tertiary font-semibold'>
+              Full-Stack Development
+            </span>
+            . Bridging the gap between educational logic and scalable
+            engineering.
+          </p>
+        </section>
 
-      <div className='bento-grid'>
-        <TerminalWidget />
-        <ProfileCard />
+        <div className='bento-grid'>
+          <TerminalWidget />
+          <ProfileCard />
 
-        <div className='col-span-12 mt-8'>
-          <h2 className='font-headline-md text-headline-md text-primary mb-6 flex items-center gap-3'>
-            <span className='material-symbols-outlined'>folder_special</span>
-            ## Featured Projects
-          </h2>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            {projects
-              .filter((p) => p.featured)
-              .map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
+          <div className='col-span-12 mt-8'>
+            <h2 className='font-headline-md text-headline-md text-primary mb-6 flex items-center gap-3'>
+              <span className='material-symbols-outlined'>folder_special</span>
+              ## Featured Projects
+            </h2>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              {projects
+                .filter((p) => p.featured)
+                .map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))}
+            </div>
           </div>
-        </div>
 
-        <GithubActivity />
+          <GithubActivity />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
