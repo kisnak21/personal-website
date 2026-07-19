@@ -9,9 +9,12 @@ const navItems = [
 
 const Sidebar = () => {
   return (
-    <aside className='hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-[260px] flex-col z-40 bg-surface-container border-r border-outline-variant'>
+    <aside
+      className='hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-[260px] flex-col z-40 bg-surface-container border-r border-outline-variant'
+      aria-label='Main Navigation'
+    >
       <div className='p-4 border-b border-outline-variant'>
-        <div className='font-label-caps text-label-caps text-on-surface-variant mb-1'>
+        <div className='font-label-caps text-label-caps text-on-surface-variant mb-1' id='explorer-heading'>
           EXPLORER
         </div>
         <div className='font-label-caps text-[10px] text-on-surface-variant/60'>
@@ -19,7 +22,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <nav className='flex-1 py-2 overflow-y-auto'>
+      <nav className='flex-1 py-2 overflow-y-auto' aria-labelledby='explorer-heading'>
         {navItems.map((item) => (
           <NavLink
             key={item.to}
@@ -32,23 +35,15 @@ const Sidebar = () => {
                   : 'border-l-2 border-transparent text-on-surface-variant hover:bg-surface-container-high hover:text-primary'
               }`
             }
+            aria-current={({ isActive }) => isActive ? 'page' : undefined}
           >
-            <span className='material-symbols-outlined text-[18px]'>
+            <span className='material-symbols-outlined text-[18px]' aria-hidden='true'>
               {item.icon}
             </span>
             {item.label}
           </NavLink>
         ))}
       </nav>
-
-      {/* <div className='p-4 border-t border-outline-variant bg-surface-container-lowest'>
-        <div className='flex items-center gap-2 text-tertiary font-code-sm text-code-sm'>
-          <span className='material-symbols-outlined text-[16px] pulse-indicator'>
-            check_circle
-          </span>
-          Status: Bootcamp Graduate
-        </div>
-      </div> */}
     </aside>
   )
 }

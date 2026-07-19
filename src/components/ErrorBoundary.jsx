@@ -12,7 +12,18 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('ErrorBoundary caught:', error, errorInfo)
+    // Safe logging check
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught:', error, errorInfo)
+    } else {
+      // Placeholder for production error monitoring (e.g., Sentry)
+      console.error('Application error occurred')
+    }
+    
+    // Try to save error state to session storage for debugging
+    try {
+      sessionStorage.setItem('last_error', JSON.stringify({ message: error.message, stack: error.stack }))
+    } catch (e) { /* ignore storage errors */ }
   }
 
   render() {
@@ -33,13 +44,14 @@ class ErrorBoundary extends Component {
               An unexpected error occurred. Please try refreshing the page.
             </p>
             <div className='bg-surface-variant rounded p-3 mb-6 text-left'>
-              <code className='font-code-sm text-code-sm text-error break-all'>
-                {this.state.error?.message || 'Unknown error'}
-              </code>
+              <div className='font-code-sm text-code-sm text-error break-all overflow-y-auto max-h-32 custom-scrollbar' role='alert' aria-live='assertive'>
+                {this.state.error?.toString() || 'Unknown error'}
+              </div>
             </div>
             <button
               onClick={() => window.location.reload()}
               className='px-6 py-3 bg-primary text-on-primary font-label-caps text-label-caps rounded hover:opacity-90 smooth-transition active:scale-95'
+              aria-label='Reload application to recover from error'
             >
               REFRESH PAGE
             </button>

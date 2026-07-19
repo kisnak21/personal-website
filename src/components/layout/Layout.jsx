@@ -23,7 +23,7 @@ const Layout = () => {
       <Header />
       <Sidebar />
 
-      <main className='md:ml-[260px] pt-16 pb-24 md:pb-8 min-h-screen'>
+      <main id='main-content' className='md:ml-[260px] pt-16 pb-24 md:pb-8 min-h-screen' tabIndex='-1' role='main'>
         <Outlet />
       </main>
 

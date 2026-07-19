@@ -9,7 +9,7 @@ const tabItems = [
 
 const MobileTabBar = () => {
   return (
-    <nav className='md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-around py-2'>
+    <nav className='md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-around py-2' aria-label='Mobile navigation'>
       {tabItems.map((item) => (
         <NavLink
           key={item.to}
@@ -20,8 +20,9 @@ const MobileTabBar = () => {
               isActive ? 'text-primary' : 'text-on-surface-variant'
             }`
           }
+          aria-current={({ isActive }) => isActive ? 'page' : undefined}
         >
-          <span className='material-symbols-outlined text-[20px]'>
+          <span className='material-symbols-outlined text-[20px]' aria-hidden='true'>
             {item.icon}
           </span>
           {item.label}

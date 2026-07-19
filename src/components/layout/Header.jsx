@@ -8,15 +8,23 @@ const Header = () => {
 
   return (
     <>
-      <header className='flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full fixed top-0 z-50 bg-background border-b border-outline-variant'>
+      <header className='flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full fixed top-0 z-50 bg-background border-b border-outline-variant' role='banner'>
         <div className='font-headline-md text-headline-md font-bold text-primary tracking-tighter whitespace-nowrap'>
           <span className='md:hidden'>[KN]</span>
           <span className='hidden md:inline'>[KN] Kresna S.</span>
         </div>
 
+        <button
+          type='button'
+          className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:font-code-sm focus:text-code-sm focus:rounded'
+          onClick={() => document.getElementById('main-content')?.focus()}
+        >
+          Skip to main content
+        </button>
+
         <div className='flex items-center gap-3 md:gap-8'>
           <div className='flex items-center gap-2'>
-            <span className='w-2 h-2 rounded-full bg-green-400 pulse-indicator flex-shrink-0'></span>
+            <span className='w-2 h-2 rounded-full bg-green-400 pulse-indicator flex-shrink-0' aria-hidden='true'></span>
             <span className='hidden md:inline font-label-caps text-label-caps text-primary font-bold'>
               Available for Work
             </span>
@@ -42,13 +50,15 @@ const Header = () => {
             >
               terminal
             </button>
-            <button
-              type='button'
-              aria-label='View source code'
+            <a
+              href='https://github.com/kisnak21/kresna-portfolio'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='View source code on GitHub (opens in new tab)'
               className='material-symbols-outlined text-[20px] md:text-[24px] hover:text-primary smooth-transition cursor-pointer'
             >
               code
-            </button>
+            </a>
           </div>
         </div>
       </header>
