@@ -8,6 +8,7 @@ const Home = lazy(() => import('./pages/Home.jsx'))
 const Projects = lazy(() => import('./pages/Projects.jsx'))
 const Skills = lazy(() => import('./pages/Skills.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
+const SupabaseTest = lazy(() => import('./pages/SupabaseTest.jsx'))
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/projects' element={<Projects />} />
             <Route path='/skills' element={<Skills />} />
             <Route path='/contact' element={<Contact />} />
+            <Route path='/test-supabase' element={<SupabaseTest />} />
           </Route>
         </Routes>
       </Suspense>
