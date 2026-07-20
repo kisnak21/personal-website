@@ -96,18 +96,18 @@ const ProfileCard = () => {
         </p>
       </div>
       <div className='space-y-2'>
-        <button className='w-full py-2 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95'>
+        <a href='/resume.pdf' download className='w-full py-2 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95'>
           <span className='material-symbols-outlined text-[16px]'>
             download
           </span>
           RESUME.PDF
-        </button>
-        <button className='w-full py-2 border border-outline-variant text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-variant smooth-transition active:scale-95'>
+        </a>
+        <a href='/contact' className='w-full py-2 border border-outline-variant text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-variant smooth-transition active:scale-95'>
           <span className='material-symbols-outlined text-[16px]'>
             alternate_email
           </span>
           HIRE ME
-        </button>
+        </a>
       </div>
     </div>
   )

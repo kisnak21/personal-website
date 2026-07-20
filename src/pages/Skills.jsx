@@ -3,7 +3,6 @@ import {
   backendSkills,
   tooling,
   philosophy,
-  stats,
 } from '../data/skillsData.js'
 import SEO from '../components/SEO.jsx'
 import SkillCard from '../components/SkillCard.jsx'

@@ -17,3 +17,6 @@ export const socialProfiles = [
 export const directEmail = 'krisnastya21@gmail.com'
 
 export const meta = { lastEdited: '2026-05-12', views: '1.2k' }
+
+// Formspree endpoint (or any POST endpoint). Set VITE_CONTACT_FORM_URL in .env
+export const formEndpoint = import.meta.env.VITE_CONTACT_FORM_URL || ''

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 
 const GITHUB_USERNAME = 'kisnak21'
+const CACHE_KEY = `gh-contrib:${GITHUB_USERNAME}`
+const CACHE_TTL = 1000 * 60 * 60 * 6 // 6 hours
 
 const levelClassMap = {
   0: 'bg-surface-variant',
@@ -8,6 +10,26 @@ const levelClassMap = {
   2: 'bg-primary/40',
   3: 'bg-primary/60',
   4: 'bg-primary',
+}
+
+const readCache = () => {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (Date.now() - parsed.ts > CACHE_TTL) return null
+    return parsed
+  } catch {
+    return null
+  }
+}
+
+const writeCache = (payload) => {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), ...payload }))
+  } catch {
+    /* ignore quota / private mode errors */
+  }
 }
 
 const GithubActivity = () => {
@@ -18,6 +40,21 @@ const GithubActivity = () => {
   useEffect(() => {
     let cancelled = false
 
+    const apply = (data, statusOverride) => {
+      if (cancelled) return
+      const currentYear = new Date().getFullYear()
+      const yearTotal = data.total?.[currentYear] ?? data.total?.last ?? null
+      setContributions(data.contributions ?? [])
+      setTotalThisYear(yearTotal)
+      setStatus(statusOverride ?? 'ready')
+    }
+
+    const cached = readCache()
+    if (cached) {
+      apply(cached, cached.status === 'error' ? 'error' : 'ready')
+      if (cached.status === 'error') return
+    }
+
     const fetchContributions = async () => {
       try {
         const res = await fetch(
@@ -27,19 +64,19 @@ const GithubActivity = () => {
           throw new Error(`GitHub contributions fetch failed: ${res.status}`)
         const data = await res.json()
         if (cancelled) return
-
-        const currentYear = new Date().getFullYear()
-        const yearTotal = data.total?.[currentYear] ?? data.total?.last ?? null
-
-        setContributions(data.contributions ?? [])
-        setTotalThisYear(yearTotal)
-        setStatus('ready')
-      } catch (err) {
-        if (!cancelled) setStatus('error')
+        writeCache({ contributions: data.contributions, total: data.total, status: 'ready' })
+        apply(data, 'ready')
+      } catch {
+        if (cancelled) return
+        if (cached) return // keep showing cached data on failure
+        writeCache({ status: 'error' })
+        setStatus('error')
       }
     }
 
-    fetchContributions()
+    if (!cached) fetchContributions()
+    else fetchContributions()
+
     return () => {
       cancelled = true
     }

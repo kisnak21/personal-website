@@ -4,23 +4,42 @@ import {
   socialProfiles,
   directEmail,
   meta,
+  formEndpoint,
 } from '../data/contactData.js'
 import { profile } from '../data/homeData.js'
 import SEO from '../components/SEO.jsx'
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState('idle') // idle | submitting | submitted | error
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Contact form submitted:', formData)
-    setStatus('submitted')
+    if (!formEndpoint) {
+      setStatus('error')
+      return
+    }
+    setStatus('submitting')
+    try {
+      const res = await fetch(formEndpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(e.currentTarget),
+      })
+      if (res.ok) {
+        setStatus('submitted')
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -141,17 +160,26 @@ const Contact = () => {
 
               <button
                 type='submit'
-                className='w-full sm:w-auto self-start px-6 py-3 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95'
+                disabled={status === 'submitting'}
+                className='w-full sm:w-auto self-start px-6 py-3 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed'
               >
                 <span className='material-symbols-outlined text-[16px]'>
-                  play_arrow
+                  {status === 'submitting' ? 'hourglass_empty' : 'play_arrow'}
                 </span>
-                SUBMIT_FORM
+                {status === 'submitting' ? 'SENDING...' : 'SUBMIT_FORM'}
               </button>
 
               {status === 'submitted' && (
-                <p className='text-tertiary font-code-sm text-code-sm'>
+                <p className='text-tertiary font-code-sm text-code-sm' role='status'>
                   $ message.send() → 200 OK
+                </p>
+              )}
+              {status === 'error' && (
+                <p className='text-error font-code-sm text-code-sm' role='alert'>
+                  $ message.send() → 500 ERR — please try again or email{' '}
+                  <a href={`mailto:${directEmail}`} className='hover:underline'>
+                    {directEmail}
+                  </a>
                 </p>
               )}
             </form>

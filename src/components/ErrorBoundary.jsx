@@ -13,17 +13,19 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     // Safe logging check
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught:', error, errorInfo)
     } else {
       // Placeholder for production error monitoring (e.g., Sentry)
       console.error('Application error occurred')
     }
-    
+
     // Try to save error state to session storage for debugging
     try {
       sessionStorage.setItem('last_error', JSON.stringify({ message: error.message, stack: error.stack }))
-    } catch (e) { /* ignore storage errors */ }
+    } catch {
+      /* ignore storage errors */
+    }
   }
 
   render() {
