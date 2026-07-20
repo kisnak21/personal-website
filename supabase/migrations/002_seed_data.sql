@@ -85,7 +85,7 @@ INSERT INTO site_settings (key, value) VALUES
 INSERT INTO api_keys (name, key_hash, active) VALUES
 (
   'Admin Master Key',
-  '8f3e9d2c1a5b7e6f4d8a2c9e1b5f7a3d6e9c2b8a4f1d7e3c5b9a6f2d8e1c4a7b',
+  '103c6e01f7644175515f5738254ee34c2bb85679b1bc9dc73555d074a6dc45a0',
   TRUE
 );
 
