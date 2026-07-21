@@ -202,13 +202,13 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
             <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-bg-primary">
               {materialIcons.map((icon) => (
                 <button
-                  key={icon}
+                  key={icon.name}
                   type="button"
-                  onClick={() => setFormData({ ...formData, icon: icon })}
-                  className={`p-2 rounded hover:bg-surface-variant transition-colors flex items-center justify-center ${formData.icon === icon ? 'bg-primary/10 border border-primary' : 'border-transparent border'}`}
-                  title={icon}
+                  onClick={() => setFormData({ ...formData, icon: icon.name })}
+                  className={`p-2 rounded hover:bg-surface-variant transition-colors flex items-center justify-center ${formData.icon === icon.name ? 'bg-primary/10 border border-primary' : 'border-transparent border'}`}
+                  title={icon.name}
                 >
-                  <span className="material-symbols-outlined text-[18px]">{icon}</span>
+                  <span className="material-symbols-outlined text-[18px]">{icon.name}</span>
                 </button>
               ))}
             </div>
