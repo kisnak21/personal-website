@@ -1,9 +1,7 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getProjects } from '../api/projects.js'
+import { useQuery } from '@tanstack/react-query'
+import { getProjects, getProjectBySlug } from '../api/projects.js'
 
 export const useProjects = (options = {}) => {
-  const queryClient = useQueryClient()
-
   return useQuery({
     queryKey: ['projects', options],
     queryFn: () => getProjects(options),

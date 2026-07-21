@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getProjects } from '../api/projects.js'
-import { getSkills } from '../api/skills.js'
-import { getSiteSettings } from '../api/skills.js'
 import SEO from '../components/SEO.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 

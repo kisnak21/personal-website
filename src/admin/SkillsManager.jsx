@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getSkills, createSkill, updateSkill, deleteSkill } from '../api/skills.js'
+import { getSkills, deleteSkill } from '../api/skills.js'
+import { SkillForm } from './components/SkillForm.jsx'
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react'
 
 export default function SkillsManager() {
@@ -33,14 +34,11 @@ export default function SkillsManager() {
         <h2 className="font-headline-sm text-headline-sm text-primary mb-6">
           {currentSkill ? 'Edit Skill' : 'Create New Skill'}
         </h2>
-        {/* Skill Form will go here. Stubs for now to get the layout complete */}
-        <p className="text-on-surface-variant mb-4">Form implementation pending...</p>
-        <button 
-          onClick={() => setIsEditing(false)}
-          className="px-4 py-2 border border-outline-variant text-on-surface rounded hover:bg-surface-variant smooth-transition"
-        >
-          Cancel
-        </button>
+        <SkillForm 
+          skill={currentSkill} 
+          onSuccess={() => setIsEditing(false)}
+          onCancel={() => setIsEditing(false)}
+        />
       </div>
     )
   }

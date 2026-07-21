@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getProjects, createProject, updateProject, deleteProject } from '../api/projects.js'
+import { getProjects, deleteProject } from '../api/projects.js'
+import { ProjectForm } from './components/ProjectForm.jsx'
 import { Plus, Pencil, Trash2, Check, X, GripVertical } from 'lucide-react'
 
 export default function ProjectsManager() {
@@ -32,14 +33,11 @@ export default function ProjectsManager() {
         <h2 className="font-headline-sm text-headline-sm text-primary mb-6">
           {currentProject ? 'Edit Project' : 'Create New Project'}
         </h2>
-        {/* Project Form will go here. Stubs for now to get the layout complete */}
-        <p className="text-on-surface-variant mb-4">Form implementation pending...</p>
-        <button 
-          onClick={() => setIsEditing(false)}
-          className="px-4 py-2 border border-outline-variant text-on-surface rounded hover:bg-surface-variant smooth-transition"
-        >
-          Cancel
-        </button>
+        <ProjectForm 
+          project={currentProject} 
+          onSuccess={() => setIsEditing(false)}
+          onCancel={() => setIsEditing(false)}
+        />
       </div>
     )
   }

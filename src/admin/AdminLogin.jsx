@@ -24,6 +24,7 @@ export default function AdminLogin() {
         setError(result.error || 'Invalid admin key')
       }
     } catch (err) {
+      console.error(err)
       setError('Authentication failed. Please try again.')
     } finally {
       setIsLoading(false)
