@@ -1,23 +1,32 @@
-import { useEffect, useState } from 'react'
-import { terminalLines, profile } from '../data/homeData.js'
-import { projects } from '../data/projectsData.js'
+import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { getProjects } from '../api/projects.js'
+import { getSkills } from '../api/skills.js'
+import { getSiteSettings } from '../api/skills.js'
 import SEO from '../components/SEO.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
-import GithubActivity from '../components/GithubActivity.jsx'
 
 const TYPE_SPEED_MS = 40
 const LINE_PAUSE_MS = 200
 
 const TerminalWidget = () => {
-  const [typedLines, setTypedLines] = useState(terminalLines.map(() => ''))
+  const [typedLines, setTypedLines] = useState(['', '', '', '', '', '', ''])
   const [done, setDone] = useState(false)
 
   useEffect(() => {
     let cancelled = false
 
     const run = async () => {
-      for (let i = 0; i < terminalLines.length; i++) {
-        const fullText = terminalLines[i].text
+      for (let i = 0; i < 7; i++) {
+        const fullText = [
+          'Loading projects...',
+          'Connecting to database...',
+          'Fetching data...',
+          'Processing results...',
+          'Optimizing queries...',
+          'Caching response...',
+          'Ready to display!',
+        ][i]
         for (let c = 1; c <= fullText.length; c++) {
           if (cancelled) return
           await new Promise((r) => setTimeout(r, TYPE_SPEED_MS))
@@ -57,13 +66,12 @@ const TerminalWidget = () => {
       </div>
 
       <div className='p-6 font-code-sm text-code-sm bg-surface-container-lowest flex-1 min-h-[200px]'>
-        {terminalLines.map((line, i) => (
+        {typedLines.map((line, i) => (
           <div
             key={i}
-            className={`mb-2 ${line.indent ? 'ml-4' : ''} ${line.className}`}
+            className={`mb-2 ml-4 ${i === 6 && done ? 'text-primary font-bold' : 'text-tertiary'}`}
           >
-            <span className='text-tertiary'>{line.prefix}</span>{' '}
-            <span>{typedLines[i]}</span>
+            {line}
           </div>
         ))}
         {done && (
@@ -84,28 +92,31 @@ const ProfileCard = () => {
         <div className='w-16 h-16 rounded-full mb-4 overflow-hidden border-2 border-primary'>
           <img
             className='w-full h-full object-cover'
-            alt={profile.name}
-            src={profile.avatar}
+            alt='Kresna S. Nugroho'
+            src='https://avatars.githubusercontent.com/u/102658612?v=4'
           />
         </div>
         <h3 className='font-headline-sm text-headline-sm text-on-surface mb-1'>
-          {profile.name}
+          Kresna S. Nugroho
         </h3>
         <p className='text-on-surface-variant font-code-sm text-code-sm mb-4'>
-          Location: {profile.location}
+          Location: Indonesia
         </p>
       </div>
       <div className='space-y-2'>
-        <a href='/resume.pdf' download className='w-full py-2 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95'>
-          <span className='material-symbols-outlined text-[16px]'>
-            download
-          </span>
+        <a
+          href='/resume.pdf'
+          download
+          className='w-full py-2 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:opacity-90 smooth-transition active:scale-95'
+        >
+          <span className='material-symbols-outlined text-[16px]'>download</span>
           RESUME.PDF
         </a>
-        <a href='/contact' className='w-full py-2 border border-outline-variant text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-variant smooth-transition active:scale-95'>
-          <span className='material-symbols-outlined text-[16px]'>
-            alternate_email
-          </span>
+        <a
+          href='/contact'
+          className='w-full py-2 border border-outline-variant text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-variant smooth-transition active:scale-95'
+        >
+          <span className='material-symbols-outlined text-[16px]'>alternate_email</span>
           HIRE ME
         </a>
       </div>
@@ -114,6 +125,41 @@ const ProfileCard = () => {
 }
 
 const Home = () => {
+  const { data: projects, isLoading, error } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => getProjects({ featured: true }),
+  })
+
+  if (isLoading) {
+    return (
+      <>
+        <SEO
+          title='Home'
+          description='Kresna S. Nugroho - ICT Teacher pivoting into full-stack development.'
+          url='/'
+        />
+        <div className='flex items-center justify-center min-h-screen'>
+          <div className='text-primary font-headline-sm text-headline-sm'>Loading...</div>
+        </div>
+      </>
+    )
+  }
+
+  if (error) {
+    return (
+      <>
+        <SEO
+          title='Home'
+          description='Kresna S. Nugroho - ICT Teacher pivoting into full-stack development.'
+          url='/'
+        />
+        <div className='flex items-center justify-center min-h-screen'>
+          <div className='text-red-500 font-headline-sm text-headline-sm'>Error loading projects</div>
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
       <SEO
@@ -148,15 +194,15 @@ const Home = () => {
               ## Featured Projects
             </h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {projects
-                .filter((p) => p.featured)
-                .map((project) => (
+              {projects?.length > 0 ? (
+                projects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
-                ))}
+                ))
+              ) : (
+                <p className='text-on-surface-variant'>No featured projects found.</p>
+              )}
             </div>
           </div>
-
-          <GithubActivity />
         </div>
       </div>
     </>

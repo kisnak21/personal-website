@@ -1,9 +1,25 @@
-import { projects as projectsList } from '../data/projectsData.js'
+import { useState, useEffect } from 'react'
+import { getProjects } from '../api/projects.js'
 import SEO from '../components/SEO.jsx'
 import JsonCodePanel from '../components/JsonCodePanel.jsx'
 import ProjectFileCard from '../components/ProjectFileCard.jsx'
 
 const Projects = () => {
+  const [projectsList, setProjectsList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true)
+      const res = await getProjects()
+      if (res.data) setProjectsList(res.data)
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
+
+  if (isLoading) return <div>Loading...</div>
+
   return (
     <>
       <SEO
@@ -51,7 +67,7 @@ const Projects = () => {
               View raw JSON
             </summary>
             <div className='p-6 font-code-sm text-code-sm overflow-x-auto custom-scrollbar'>
-              <JsonCodePanel projects={projectsList} />
+              <JsonCodePanel data={{ projects: projectsList }} />
             </div>
           </details>
 
@@ -62,7 +78,7 @@ const Projects = () => {
               <div className='terminal-header-dot bg-[#FFBD2E]'></div>
               <div className='terminal-header-dot bg-[#27C93F]'></div>
             </div>
-            <JsonCodePanel projects={projectsList} />
+            <JsonCodePanel data={{ projects: projectsList }} />
           </div>
 
           {/* Rendered cards panel */}

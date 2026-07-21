@@ -1,64 +1,60 @@
-const buildLines = (projects) => {
+const buildLines = (data) => {
   const lines = []
   lines.push([{ text: '{', className: 'text-on-surface' }])
-  lines.push([
-    { text: '  ', className: '' },
-    { text: '"projects"', className: 'text-tertiary' },
-    { text: ': ', className: '' },
-    { text: '[', className: 'text-on-surface' },
-  ])
 
-  projects.forEach((p, i) => {
-    const isLast = i === projects.length - 1
-
-    lines.push([{ text: '    {', className: 'text-on-surface' }])
-
+  Object.keys(data).forEach((key, keyIndex) => {
+    const isLastKey = keyIndex === Object.keys(data).length - 1
     lines.push([
-      { text: '      ', className: '' },
-      { text: '"id"', className: 'text-tertiary' },
+      { text: '  ', className: '' },
+      { text: `"${key}"`, className: 'text-tertiary' },
       { text: ': ', className: '' },
-      { text: String(i + 1), className: 'text-secondary' },
-      { text: ',', className: '' },
+      { text: '[', className: 'text-on-surface' },
     ])
 
-    lines.push([
-      { text: '      ', className: '' },
-      { text: '"title"', className: 'text-tertiary' },
-      { text: ': ', className: '' },
-      { text: `"${p.title}"`, className: 'text-primary' },
-      { text: ',', className: '' },
-    ])
+    data[key].forEach((item, itemIndex) => {
+      const isLastItem = itemIndex === data[key].length - 1
+      lines.push([{ text: '    {', className: 'text-on-surface' }])
 
-    lines.push([
-      { text: '      ', className: '' },
-      { text: '"techStack"', className: 'text-tertiary' },
-      { text: ': [', className: '' },
-    ])
+      Object.keys(item).forEach((field, fieldIndex) => {
+        const isLastField = fieldIndex === Object.keys(item).length - 1
+        let value = item[field]
+        let valueClass = 'text-primary'
 
-    p.techStack.forEach((tech, ti) => {
-      const isLastTech = ti === p.techStack.length - 1
+        if (typeof value === 'boolean') {
+          value = String(value)
+          valueClass = 'text-secondary'
+        } else if (typeof value === 'number') {
+          value = String(value)
+          valueClass = 'text-secondary'
+        } else if (Array.isArray(value)) {
+          value = `[${value.map((v) => `"${v}"`).join(', ')}]`
+        } else if (typeof value === 'string') {
+          value = `"${value}"`
+        }
+
+        lines.push([
+          { text: '      ', className: '' },
+          { text: `"${field}"`, className: 'text-tertiary' },
+          { text: ': ', className: '' },
+          { text: value, className: valueClass },
+          { text: isLastField ? '' : ',', className: '' },
+        ])
+      })
       lines.push([
-        { text: '        ', className: '' },
-        {
-          text: `"${tech}"${isLastTech ? '' : ','}`,
-          className: 'text-primary',
-        },
+        { text: `    }${isLastItem ? '' : ','}`, className: 'text-on-surface' },
       ])
     })
-
-    lines.push([{ text: '      ]', className: 'text-on-surface' }])
     lines.push([
-      { text: `    }${isLast ? '' : ','}`, className: 'text-on-surface' },
+      { text: `  ]${isLastKey ? '' : ','}`, className: 'text-on-surface' },
     ])
   })
 
-  lines.push([{ text: '  ]', className: 'text-on-surface' }])
   lines.push([{ text: '}', className: 'text-on-surface' }])
   return lines
 }
 
-const JsonCodePanel = ({ projects }) => {
-  const lines = buildLines(projects)
+const JsonCodePanel = ({ data }) => {
+  const lines = buildLines(data)
 
   return (
     <div className='flex gap-4'>

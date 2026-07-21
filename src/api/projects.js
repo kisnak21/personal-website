@@ -45,22 +45,20 @@ export async function getProjectBySlug(slug) {
   }
 }
 
-export async function getAllProjects() {
-  if (!supabaseAdmin) {
-    return { data: null, error: new Error('Admin client not available') }
-  }
-
+export async function getProjectBySlug(slug) {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from('projects')
       .select('*')
-      .order('sort_order', { ascending: true })
+      .eq('slug', slug)
+      .eq('published', true)
+      .single()
 
     if (error) throw error
 
     return { data, error: null }
   } catch (error) {
-    console.error('Error fetching all projects:', error)
+    console.error(`Error fetching project with slug ${slug}:`, error)
     return { data: null, error }
   }
 }
