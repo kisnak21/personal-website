@@ -16,7 +16,7 @@ const ProjectCard = ({ project }) => {
           {project.description}
         </p>
         <div className='flex flex-wrap gap-2 mb-6'>
-          {project.techStack.map((tech, i) => (
+          {project.tech_stack.map((tech, i) => (
             <span
               key={tech}
               className={`font-code-sm text-[11px] px-2 py-0.5 rounded border ${getTagClassName(i)}`}
@@ -27,7 +27,7 @@ const ProjectCard = ({ project }) => {
         </div>
         <div className='flex items-center gap-4'>
           <a
-            href={project.github}
+            href={project.github_url}
             target='_blank'
             rel='noopener noreferrer'
             className='inline-flex items-center gap-1 text-primary font-label-caps text-label-caps hover:underline'
@@ -37,9 +37,9 @@ const ProjectCard = ({ project }) => {
               open_in_new
             </span>
           </a>
-          {project.demo && (
+          {project.demo_url && (
             <a
-              href={project.demo}
+              href={project.demo_url}
               target='_blank'
               rel='noopener noreferrer'
               className='inline-flex items-center gap-1 text-secondary font-label-caps text-label-caps hover:underline'

@@ -30,7 +30,7 @@ const ProjectFileCard = ({ project, index }) => {
           {project.description}
         </p>
         <div className='flex flex-wrap gap-2 mb-4'>
-          {project.techStack.map((tech, i) => (
+          {project.tech_stack.map((tech, i) => (
             <span
               key={tech}
               className={`px-2 py-0.5 border font-label-caps text-[10px] rounded ${getTagClassName(i)}`}
@@ -40,9 +40,9 @@ const ProjectFileCard = ({ project, index }) => {
           ))}
         </div>
         <div className='flex gap-4 border-t border-outline-variant pt-4'>
-          {project.demo && (
+          {project.demo_url && (
             <a
-              href={project.demo}
+              href={project.demo_url}
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:text-primary-container flex items-center gap-1 font-code-sm text-code-sm transition-colors'
@@ -54,7 +54,7 @@ const ProjectFileCard = ({ project, index }) => {
             </a>
           )}
           <a
-            href={project.github}
+            href={project.github_url}
             target='_blank'
             rel='noopener noreferrer'
             className='text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-code-sm text-code-sm transition-colors'
