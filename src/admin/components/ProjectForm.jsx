@@ -189,21 +189,46 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
           />
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block font-code-sm text-code-sm text-on-surface-variant mb-1">Material Icon</label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-tertiary">
-                  {formData.icon}
-                </span>
-                <input
-                  type="text"
-                  value={formData.icon}
-                  onChange={e => setFormData({ ...formData, icon: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
-                />
-              </div>
-            </div>
-            <div>
+<div>
+          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Material Icon</label>
+          <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-bg-primary">
+            {materialIcons.map((icon) => (
+              <button
+                key={icon.name}
+                type="button"
+                onClick={() => setFormData({ ...formData, icon: icon.name })}
+                className={`p-2 rounded hover:bg-surface-variant transition-colors ${formData.icon === icon.name ? 'bg-primary/10 border border-primary' : 'border-transparent'}`}                title={icon.name}
+              >
+                <span className="material-symbols-outlined text-[18px]">{icon.name}</span>
+              </button>
+            ))}
+          </div>
+          <div className="mt-2 flex items-center gap-2 text-on-surface-variant font-code-sm text-[11px]">
+            <span>Current:</span>
+            <span className="material-symbols-outlined text-[16px]">{formData.icon}</span>
+            <span>{formData.icon}</span>
+          </div>
+        </div>
+
+        <div>
+          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Sort Order</label>
+          <input
+            type="number"
+            value={formData.sort_order}
+            onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
+            className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+          />
+        </div>
+
+        <div className="space-y-3 pt-2">
+          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Sort Order</label>
+          <input
+            type="number"
+            value={formData.sort_order}
+            onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
+            className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+          />
+        </div>
               <label className="block font-code-sm text-code-sm text-on-surface-variant mb-1">Sort Order</label>
               <input
                 type="number"
