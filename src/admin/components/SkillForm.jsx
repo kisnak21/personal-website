@@ -72,7 +72,7 @@ export const SkillForm = ({ skill = null, onSuccess, onCancel }) => {
             type="text"
             value={formData.name}
             onChange={e => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+            className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
             placeholder="e.g. React.js"
             required
           />
@@ -84,7 +84,7 @@ export const SkillForm = ({ skill = null, onSuccess, onCancel }) => {
             <select
               value={formData.category}
               onChange={e => setFormData({ ...formData, category: e.target.value })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none appearance-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none appearance-none"
             >
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
@@ -97,7 +97,7 @@ export const SkillForm = ({ skill = null, onSuccess, onCancel }) => {
             <select
               value={formData.proficiency}
               onChange={e => setFormData({ ...formData, proficiency: e.target.value })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none appearance-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none appearance-none"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -137,7 +137,7 @@ export const SkillForm = ({ skill = null, onSuccess, onCancel }) => {
               type="number"
               value={formData.sort_order}
               onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
             />
           </div>
         </div>

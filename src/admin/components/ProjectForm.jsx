@@ -128,7 +128,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
               type="text"
               value={formData.title}
               onChange={handleTitleChange}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
               required
             />
           </div>
@@ -139,7 +139,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
               type="text"
               value={formData.slug}
               onChange={e => setFormData({ ...formData, slug: generateSlug(e.target.value) })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
               required
             />
           </div>
@@ -149,7 +149,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
             <textarea
               value={formData.description}
               onChange={e => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none min-h-[100px]"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none min-h-[100px]"
               required
             />
           </div>
@@ -163,7 +163,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
                 onChange={e => setTechInput(e.target.value)}
                 onKeyDown={handleAddTech}
                 placeholder="e.g. React"
-                className="flex-1 px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+                className="flex-1 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
               />
               <button 
                 type="button"
@@ -199,7 +199,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
 
           <div>
             <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Material Icon</label>
-            <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-bg-primary">
+            <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-surface-container-lowest">
               {materialIcons.map((icon) => (
                 <button
                   key={icon.name}
@@ -225,7 +225,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
               type="number"
               value={formData.sort_order}
               onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+              className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -236,7 +236,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
                 type="url"
                 value={formData.github_url}
                 onChange={e => setFormData({ ...formData, github_url: e.target.value })}
-                className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+                className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
               />
             </div>
             <div>
@@ -245,7 +245,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
                 type="url"
                 value={formData.demo_url}
                 onChange={e => setFormData({ ...formData, demo_url: e.target.value })}
-                className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+                className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
               />
             </div>
           </div>
@@ -256,7 +256,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
                 type="checkbox"
                 checked={formData.published}
                 onChange={e => setFormData({ ...formData, published: e.target.checked })}
-                className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-bg-primary"
+                className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container-lowest"
               />
               <span className="font-code-sm text-code-sm text-on-surface">Published</span>
             </label>
@@ -265,7 +265,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
                 type="checkbox"
                 checked={formData.featured}
                 onChange={e => setFormData({ ...formData, featured: e.target.checked })}
-                className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-bg-primary"
+                className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container-lowest"
               />
               <span className="font-code-sm text-code-sm text-on-surface">Featured</span>
             </label>

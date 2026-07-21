@@ -32,7 +32,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-surface-container rounded-lg border border-outline-variant shadow-xl p-8">
           <div className="text-center mb-8">
