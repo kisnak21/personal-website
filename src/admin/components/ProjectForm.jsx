@@ -3,6 +3,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createProject, updateProject } from '../../api/projects.js'
 import { ImageUploader } from './ImageUploader.jsx'
 
+// Icon options from the original implementation
+const materialIcons = [
+  { name: 'code' }, { name: 'explore' }, { name: 'folder_special' }, 
+  { name: 'folder_open' }, { name: 'data_object' }, { name: 'auto_stories' },
+  { name: 'checklist' }, { name: 'browser_updated' }, { name: 'desktop_access_disabled' }, 
+  { name: 'cloud_download' }, { name: 'layers' }, { name: 'storage' }, 
+  { name: 'web' }, { name: 'laptop' }, { name: 'desktop' }, { name: 'phone' }, { name: 'tablet' }
+]
+
 export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
   const queryClient = useQueryClient()
   const isEditing = !!project
@@ -188,55 +197,36 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
             onAltTextChange={(text) => setFormData({ ...formData, screenshot_alt: text })}
           />
 
-          <div className="grid grid-cols-2 gap-4">
-<div>
-          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Material Icon</label>
-          <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-bg-primary">
-            {materialIcons.map((icon) => (
-              <button
-                key={icon.name}
-                type="button"
-                onClick={() => setFormData({ ...formData, icon: icon.name })}
-                className={`p-2 rounded hover:bg-surface-variant transition-colors ${formData.icon === icon.name ? 'bg-primary/10 border border-primary' : 'border-transparent'}`}                title={icon.name}
-              >
-                <span className="material-symbols-outlined text-[18px]">{icon.name}</span>
-              </button>
-            ))}
-          </div>
-          <div className="mt-2 flex items-center gap-2 text-on-surface-variant font-code-sm text-[11px]">
-            <span>Current:</span>
-            <span className="material-symbols-outlined text-[16px]">{formData.icon}</span>
-            <span>{formData.icon}</span>
-          </div>
-        </div>
-
-        <div>
-          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Sort Order</label>
-          <input
-            type="number"
-            value={formData.sort_order}
-            onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-            className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
-          />
-        </div>
-
-        <div className="space-y-3 pt-2">
-          <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Sort Order</label>
-          <input
-            type="number"
-            value={formData.sort_order}
-            onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-            className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
-          />
-        </div>
-              <label className="block font-code-sm text-code-sm text-on-surface-variant mb-1">Sort Order</label>
-              <input
-                type="number"
-                value={formData.sort_order}
-                onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
-              />
+          <div>
+            <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Material Icon</label>
+            <div className="grid grid-cols-8 gap-2 max-h-48 overflow-y-auto border border-outline-variant rounded p-2 bg-bg-primary">
+              {materialIcons.map((icon) => (
+                <button
+                  key={icon}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, icon: icon })}
+                  className={`p-2 rounded hover:bg-surface-variant transition-colors flex items-center justify-center ${formData.icon === icon ? 'bg-primary/10 border border-primary' : 'border-transparent border'}`}
+                  title={icon}
+                >
+                  <span className="material-symbols-outlined text-[18px]">{icon}</span>
+                </button>
+              ))}
             </div>
+            <div className="mt-2 flex items-center gap-2 text-on-surface-variant font-code-sm text-[11px]">
+              <span>Current:</span>
+              <span className="material-symbols-outlined text-[16px]">{formData.icon}</span>
+              <span>{formData.icon}</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-code-sm text-code-sm text-on-surface-variant mb-2">Sort Order</label>
+            <input
+              type="number"
+              value={formData.sort_order}
+              onChange={e => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
+              className="w-full px-4 py-2 bg-bg-primary border border-outline-variant rounded text-on-surface focus:border-primary focus:outline-none"
+            />
           </div>
 
           <div className="space-y-3 pt-2">
