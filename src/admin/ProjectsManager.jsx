@@ -9,12 +9,18 @@ export default function ProjectsManager() {
   const [isEditing, setIsEditing] = useState(false)
   const [currentProject, setCurrentProject] = useState(null)
 
-  const { data: projectsResponse, isLoading } = useQuery({
+  const { data: projectsData, isLoading } = useQuery({
     queryKey: ['projects', 'all'],
     queryFn: () => getProjects({ all: true }),
   })
 
-  const projects = projectsResponse?.data || []
+  // getProjects already returns the data array directly because of our useQuery `select` configuration,
+  // or because the queryFn resolves to the data directly depending on how it's called.
+  // The error "projects?.map is not a function" means projects is likely an object { data, error } instead of the array.
+  // Let's handle both possible structures to be safe:
+  const projects = Array.isArray(projectsData) 
+    ? projectsData 
+    : (projectsData?.data || [])
 
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteProject(id),

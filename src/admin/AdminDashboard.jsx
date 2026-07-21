@@ -8,18 +8,18 @@ import { Link } from 'react-router-dom'
 export default function AdminDashboard() {
   const { user } = useAdmin()
 
-  const { data: projectsResponse, isLoading: projectsLoading } = useQuery({
+  const { data: projectsData, isLoading: projectsLoading } = useQuery({
     queryKey: ['projects', 'all'],
     queryFn: () => getProjects({ all: true }),
   })
 
-  const { data: skillsResponse, isLoading: skillsLoading } = useQuery({
+  const { data: skillsData, isLoading: skillsLoading } = useQuery({
     queryKey: ['skills'],
     queryFn: () => getSkills(),
   })
 
-  const projects = projectsResponse?.data || []
-  const skills = skillsResponse?.data || []
+  const projects = Array.isArray(projectsData) ? projectsData : (projectsData?.data || [])
+  const skills = Array.isArray(skillsData) ? skillsData : (skillsData?.data || [])
 
   return (
     <div className="space-y-8">
