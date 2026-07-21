@@ -7,15 +7,33 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router')) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
             return 'react-vendor'
+          }
+          if (id.includes('node_modules/react-router')) {
+            return 'router'
+          }
+          if (id.includes('node_modules/@supabase')) {
+            return 'supabase'
+          }
+          if (id.includes('node_modules/@tanstack')) {
+            return 'query'
           }
           if (id.includes('node_modules/react-helmet')) {
             return 'helmet'
           }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'icons'
+          }
+          if (id.includes('/src/admin/')) {
+            return 'admin'
+          }
         },
       },
     },
+    target: 'esnext',
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 600,
   },
   server: {
     open: false,

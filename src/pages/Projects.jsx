@@ -20,6 +20,12 @@ const Projects = () => {
 
   if (isLoading) return <div>Loading...</div>
 
+  const jsonDisplay = projectsList.map((p, i) => ({
+    id: i + 1,
+    title: p.title,
+    techStack: p.tech_stack,
+  }))
+
   return (
     <>
       <SEO
@@ -67,7 +73,7 @@ const Projects = () => {
               View raw JSON
             </summary>
             <div className='p-6 font-code-sm text-code-sm overflow-x-auto custom-scrollbar'>
-              <JsonCodePanel data={{ projects: projectsList }} />
+              <JsonCodePanel data={{ projects: jsonDisplay }} />
             </div>
           </details>
 
@@ -78,7 +84,7 @@ const Projects = () => {
               <div className='terminal-header-dot bg-[#FFBD2E]'></div>
               <div className='terminal-header-dot bg-[#27C93F]'></div>
             </div>
-            <JsonCodePanel data={{ projects: projectsList }} />
+            <JsonCodePanel data={{ projects: jsonDisplay }} />
           </div>
 
           {/* Rendered cards panel */}

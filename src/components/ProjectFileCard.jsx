@@ -3,17 +3,27 @@ import { getTagClassName } from '../data/projectsData.js'
 const ProjectFileCard = ({ project, index }) => {
   return (
     <div className='bg-surface-container border border-outline-variant overflow-hidden flex flex-col group hover:border-primary transition-all duration-300'>
-      <div className='h-32 bg-surface-container-highest relative'>
-        <div className='absolute top-2 left-2 flex gap-1'>
+      <div className='h-32 bg-surface-container-highest relative overflow-hidden'>
+        <div className='absolute top-2 left-2 flex gap-1 z-10'>
           <div className='terminal-header-dot bg-[#FF5F56] opacity-60'></div>
           <div className='terminal-header-dot bg-[#FFBD2E] opacity-60'></div>
           <div className='terminal-header-dot bg-[#27C93F] opacity-60'></div>
         </div>
-        <div className='w-full h-full flex items-center justify-center'>
-          <span className='material-symbols-outlined text-[48px] text-tertiary/20'>
-            {project.icon}
-          </span>
-        </div>
+        {project.screenshot_url ? (
+          <img
+            src={project.screenshot_url}
+            alt={project.screenshot_alt || `${project.title} preview`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className='w-full h-full flex items-center justify-center'>
+            <span className='material-symbols-outlined text-[48px] text-tertiary/20'>
+              {project.icon}
+            </span>
+          </div>
+        )}
         <div className='absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity'></div>
       </div>
 

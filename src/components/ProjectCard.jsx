@@ -3,6 +3,17 @@ import { getTagClassName } from '../data/projectsData.js'
 const ProjectCard = ({ project }) => {
   return (
     <div className='group bg-surface-container rounded-lg border border-outline-variant overflow-hidden smooth-transition project-card-glow cursor-pointer'>
+      {project.screenshot_url && (
+        <div className="w-full h-48 overflow-hidden border-b border-outline-variant relative">
+          <img
+            src={project.screenshot_url}
+            alt={project.screenshot_alt || `${project.title} preview`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+      )}
       <div className='p-6 h-full flex flex-col'>
         <div className='mb-4 text-secondary group-hover:scale-110 smooth-transition origin-left'>
           <span className='material-symbols-outlined text-[40px]'>

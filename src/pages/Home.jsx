@@ -1,30 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getProjects } from '../api/projects.js'
+import { terminalLines } from '../data/homeData.js'
 import SEO from '../components/SEO.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 
 const TYPE_SPEED_MS = 40
 const LINE_PAUSE_MS = 200
 
-const TerminalWidget = () => {
-  const [typedLines, setTypedLines] = useState(['', '', '', '', '', '', ''])
+const TerminalWidget = ({ projectCount }) => {
+  const [typedLines, setTypedLines] = useState(terminalLines.map(() => ''))
+  const [extraLines, setExtraLines] = useState(['', '', ''])
   const [done, setDone] = useState(false)
 
   useEffect(() => {
     let cancelled = false
 
     const run = async () => {
-      for (let i = 0; i < 7; i++) {
-        const fullText = [
-          'Loading projects...',
-          'Connecting to database...',
-          'Fetching data...',
-          'Processing results...',
-          'Optimizing queries...',
-          'Caching response...',
-          'Ready to display!',
-        ][i]
+      for (let i = 0; i < terminalLines.length; i++) {
+        const fullText = terminalLines[i].text
         for (let c = 1; c <= fullText.length; c++) {
           if (cancelled) return
           await new Promise((r) => setTimeout(r, TYPE_SPEED_MS))
@@ -36,6 +30,31 @@ const TerminalWidget = () => {
         }
         await new Promise((r) => setTimeout(r, LINE_PAUSE_MS))
       }
+
+      const projectStats = [
+        `> Projects Completed: ${projectCount}`,
+        `> Current Goal: Mastering Distributed Systems`,
+        `> Status: Ready to display!`,
+      ]
+
+      for (let i = 0; i < projectStats.length; i++) {
+        const fullText = projectStats[i]
+        for (let c = 1; c <= fullText.length; c++) {
+          if (cancelled) return
+          await new Promise((r) => setTimeout(r, TYPE_SPEED_MS))
+          setExtraLines((prev) => {
+            const next = [...prev]
+            if (c === fullText.length) {
+              next[i] = fullText
+            } else {
+              next[i] = fullText.slice(0, c)
+            }
+            return next
+          })
+        }
+        await new Promise((r) => setTimeout(r, LINE_PAUSE_MS))
+      }
+
       if (!cancelled) setDone(true)
     }
 
@@ -43,7 +62,7 @@ const TerminalWidget = () => {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [projectCount])
 
   return (
     <div className='col-span-12 lg:col-span-8 bg-surface-container rounded-lg border border-outline-variant overflow-hidden flex flex-col h-full shadow-lg'>
@@ -64,14 +83,25 @@ const TerminalWidget = () => {
       </div>
 
       <div className='p-6 font-code-sm text-code-sm bg-surface-container-lowest flex-1 min-h-[200px]'>
-        {typedLines.map((line, i) => (
+        {terminalLines.map((line, i) => (
           <div
             key={i}
-            className={`mb-2 ml-4 ${i === 6 && done ? 'text-primary font-bold' : 'text-tertiary'}`}
+            className={`mb-2 ${line.indent ? 'ml-4' : ''} ${line.className}`}
           >
-            {line}
+            <span className='text-tertiary'>{line.prefix}</span>{' '}
+            <span>{typedLines[i]}</span>
           </div>
         ))}
+        <div className='mt-2'>
+          {extraLines.map((line, i) => (
+            line && (
+              <div key={i} className={`mb-2 ml-4 ${i === 2 && done ? 'text-primary font-bold' : 'text-on-surface-variant'}`}>
+                <span className='text-tertiary'>{'>'}</span>{' '}
+                <span>{line}</span>
+              </div>
+            )
+          ))}
+        </div>
         {done && (
           <div className='mt-4 flex items-center'>
             <span className='text-tertiary'>$</span>
@@ -92,13 +122,15 @@ const ProfileCard = () => {
             className='w-full h-full object-cover'
             alt='Kresna S. Nugroho'
             src='https://avatars.githubusercontent.com/u/102658612?v=4'
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <h3 className='font-headline-sm text-headline-sm text-on-surface mb-1'>
           Kresna S. Nugroho
         </h3>
         <p className='text-on-surface-variant font-code-sm text-code-sm mb-4'>
-          Location: Indonesia
+          Location: Pontianak, ID
         </p>
       </div>
       <div className='space-y-2'>
@@ -123,40 +155,12 @@ const ProfileCard = () => {
 }
 
 const Home = () => {
-  const { data: projects, isLoading, error } = useQuery({
+  const { data: projectsRes, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: () => getProjects({ featured: true }),
   })
 
-  if (isLoading) {
-    return (
-      <>
-        <SEO
-          title='Home'
-          description='Kresna S. Nugroho - ICT Teacher pivoting into full-stack development.'
-          url='/'
-        />
-        <div className='flex items-center justify-center min-h-screen'>
-          <div className='text-primary font-headline-sm text-headline-sm'>Loading...</div>
-        </div>
-      </>
-    )
-  }
-
-  if (error) {
-    return (
-      <>
-        <SEO
-          title='Home'
-          description='Kresna S. Nugroho - ICT Teacher pivoting into full-stack development.'
-          url='/'
-        />
-        <div className='flex items-center justify-center min-h-screen'>
-          <div className='text-red-500 font-headline-sm text-headline-sm'>Error loading projects</div>
-        </div>
-      </>
-    )
-  }
+  const projects = projectsRes?.data || []
 
   return (
     <>
@@ -183,7 +187,7 @@ const Home = () => {
         </section>
 
         <div className='bento-grid'>
-          <TerminalWidget />
+          <TerminalWidget projectCount={projects.length} />
           <ProfileCard />
 
           <div className='col-span-12 mt-8'>
@@ -191,15 +195,19 @@ const Home = () => {
               <span className='material-symbols-outlined'>folder_special</span>
               ## Featured Projects
             </h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {projects?.length > 0 ? (
-                projects.map((project) => (
+            {isLoading ? (
+              <p className='text-on-surface-variant font-code-sm'>Loading featured projects...</p>
+            ) : error ? (
+              <p className='text-red-500 font-code-sm'>Failed to load projects</p>
+            ) : projects.length > 0 ? (
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {projects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
-                ))
-              ) : (
-                <p className='text-on-surface-variant'>No featured projects found.</p>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className='text-on-surface-variant'>No featured projects found.</p>
+            )}
           </div>
         </div>
       </div>
