@@ -9,10 +9,12 @@ export default function ProjectsManager() {
   const [isEditing, setIsEditing] = useState(false)
   const [currentProject, setCurrentProject] = useState(null)
 
-  const { data: projects, isLoading } = useQuery({
+  const { data: projectsResponse, isLoading } = useQuery({
     queryKey: ['projects', 'all'],
     queryFn: () => getProjects({ all: true }),
   })
+
+  const projects = projectsResponse?.data || []
 
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteProject(id),

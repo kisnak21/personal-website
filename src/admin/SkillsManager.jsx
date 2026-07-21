@@ -10,10 +10,12 @@ export default function SkillsManager() {
   const [currentSkill, setCurrentSkill] = useState(null)
   const [activeCategory, setActiveCategory] = useState('frontend')
 
-  const { data: skills, isLoading } = useQuery({
+  const { data: skillsResponse, isLoading } = useQuery({
     queryKey: ['skills'],
     queryFn: () => getSkills(),
   })
+
+  const skills = skillsResponse?.data || []
 
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteSkill(id),
