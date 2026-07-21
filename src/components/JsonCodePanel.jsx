@@ -27,7 +27,27 @@ const buildLines = (data) => {
           value = String(value)
           valueClass = 'text-secondary'
         } else if (Array.isArray(value)) {
-          value = `[${value.map((v) => `"${v}"`).join(', ')}]`
+          if (value.length === 0) {
+            value = '[]'
+          } else {
+            lines.push([
+              { text: '      ', className: '' },
+              { text: `"${field}"`, className: 'text-tertiary' },
+              { text: ': [', className: 'text-on-surface' },
+            ])
+            value.forEach((v, vi) => {
+              const isLastTech = vi === value.length - 1
+              lines.push([
+                { text: '        ', className: '' },
+                { text: `"${v}"${isLastTech ? '' : ','}`, className: 'text-primary' },
+              ])
+            })
+            lines.push([
+              { text: '      ]', className: 'text-on-surface' },
+              { text: isLastField ? '' : ',', className: '' },
+            ])
+            return
+          }
         } else if (typeof value === 'string') {
           value = `"${value}"`
         }
