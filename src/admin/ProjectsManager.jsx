@@ -25,7 +25,7 @@ export default function ProjectsManager() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteProject(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['projects'])
+      queryClient.invalidateQueries({ queryKey: ['projects'], exact: false })
     },
   })
 

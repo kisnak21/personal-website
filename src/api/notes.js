@@ -1,19 +1,19 @@
 import { supabase, supabaseAdmin } from './supabase.js'
 
-export async function getProjects({ featured, limit, all = false } = {}) {
+export async function getNotes({ published = true, limit, projectId, all = false } = {}) {
   try {
     const client = (all && supabaseAdmin) ? supabaseAdmin : supabase
     let query = client
-      .from('projects')
-      .select('*')
-      .order('sort_order', { ascending: true })
+      .from('notes')
+      .select('*, projects(id, title, slug)')
+      .order('created_at', { ascending: false })
 
     if (!all) {
       query = query.eq('published', true)
     }
 
-    if (featured !== undefined) {
-      query = query.eq('featured', featured)
+    if (projectId) {
+      query = query.eq('project_id', projectId)
     }
 
     if (limit) {
@@ -21,98 +21,93 @@ export async function getProjects({ featured, limit, all = false } = {}) {
     }
 
     const { data, error } = await query
-
     if (error) throw error
 
     return { data, error: null }
   } catch (error) {
-    console.error('Error fetching projects:', error)
+    console.error('Error fetching notes:', error)
     return { data: null, error }
   }
 }
 
-export async function getProjectBySlug(slug) {
+export async function getNoteBySlug(slug) {
   try {
     const { data, error } = await supabase
-      .from('projects')
-      .select('*')
+      .from('notes')
+      .select('*, projects(id, title, slug, github_url, demo_url)')
       .eq('slug', slug)
       .eq('published', true)
       .single()
 
     if (error) throw error
-
     return { data, error: null }
   } catch (error) {
-    console.error(`Error fetching project with slug ${slug}:`, error)
+    console.error(`Error fetching note with slug ${slug}:`, error)
     return { data: null, error }
   }
 }
 
-export async function createProject(projectData) {
+export async function createNote(noteData) {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Admin client not available') }
   }
 
   try {
     const { data, error } = await supabaseAdmin
-      .from('projects')
-      .insert([projectData])
+      .from('notes')
+      .insert([noteData])
       .select()
       .single()
 
     if (error) throw error
-
     return { data, error: null }
   } catch (error) {
-    console.error('Error creating project:', error)
+    console.error('Error creating note:', error)
     return { data: null, error }
   }
 }
 
-export async function updateProject(id, projectData) {
+export async function updateNote(id, noteData) {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Admin client not available') }
   }
 
   try {
     const { data, error } = await supabaseAdmin
-      .from('projects')
-      .update(projectData)
+      .from('notes')
+      .update(noteData)
       .eq('id', id)
       .select()
       .single()
 
     if (error) throw error
-
     return { data, error: null }
   } catch (error) {
-    console.error('Error updating project:', error)
+    console.error('Error updating note:', error)
     return { data: null, error }
   }
 }
 
-export async function deleteProject(id) {
+export async function deleteNote(id) {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Admin client not available') }
   }
 
   try {
     const { error } = await supabaseAdmin
-      .from('projects')
+      .from('notes')
       .delete()
       .eq('id', id)
 
     if (error) throw error
-
     return { data: true, error: null }
   } catch (error) {
-    console.error('Error deleting project:', error)
+    console.error('Error deleting note:', error)
     return { data: null, error }
   }
 }
 
-export async function uploadProjectImage(file, slug) {
+export async function uploadNoteCoverImage(file, slug) {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Admin client not available') }
   }
@@ -120,10 +115,10 @@ export async function uploadProjectImage(file, slug) {
   try {
     const timestamp = Date.now()
     const fileExt = file.name.split('.').pop()
-    const filePath = `projects/${slug}-${timestamp}.${fileExt}`
+    const filePath = `notes/${slug}-${timestamp}.${fileExt}`
 
     const { error } = await supabaseAdmin.storage
-      .from('project-images')
+      .from('note-images')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -132,37 +127,33 @@ export async function uploadProjectImage(file, slug) {
     if (error) throw error
 
     const { data: urlData } = supabaseAdmin.storage
-      .from('project-images')
+      .from('note-images')
       .getPublicUrl(filePath)
 
     return { data: urlData.publicUrl, error: null }
   } catch (error) {
-    console.error('Error uploading project image:', error)
+    console.error('Error uploading note cover image:', error)
     return { data: null, error }
   }
 }
 
-export async function deleteProjectImage(imageUrl) {
+export async function deleteNoteCoverImage(imageUrl) {
   if (!supabaseAdmin) {
     return { data: null, error: new Error('Admin client not available') }
   }
 
   try {
-    const filePath = imageUrl.split('/project-images/')[1]
-
-    if (!filePath) {
-      throw new Error('Invalid image URL')
-    }
+    const filePath = imageUrl.split('/note-images/')[1]
+    if (!filePath) throw new Error('Invalid image URL')
 
     const { error } = await supabaseAdmin.storage
-      .from('project-images')
+      .from('note-images')
       .remove([filePath])
 
     if (error) throw error
-
     return { data: true, error: null }
   } catch (error) {
-    console.error('Error deleting project image:', error)
+    console.error('Error deleting note cover image:', error)
     return { data: null, error }
   }
 }

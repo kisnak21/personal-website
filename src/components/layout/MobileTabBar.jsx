@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 const tabItems = [
   { to: '/', label: 'HOME', icon: 'home' },
   { to: '/projects', label: 'PROJECTS', icon: 'folder_open' },
+  { to: '/notes', label: 'NOTES', icon: 'article' },
   { to: '/skills', label: 'SKILLS', icon: 'terminal' },
   { to: '/contact', label: 'CONTACT', icon: 'mail' },
 ]

@@ -7,6 +7,8 @@ import { useAdmin } from './context/AdminContext.jsx'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
 const Projects = lazy(() => import('./pages/Projects.jsx'))
+const Notes = lazy(() => import('./pages/Notes.jsx'))
+const NoteDetail = lazy(() => import('./pages/NoteDetail.jsx'))
 const Skills = lazy(() => import('./pages/Skills.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
 const SupabaseTest = lazy(() => import('./pages/SupabaseTest.jsx'))
@@ -14,6 +16,7 @@ const AdminLogin = lazy(() => import('./admin/AdminLogin.jsx'))
 const AdminLayout = lazy(() => import('./admin/AdminLayout.jsx'))
 const AdminDashboard = lazy(() => import('./admin/AdminDashboard.jsx'))
 const ProjectsManager = lazy(() => import('./admin/ProjectsManager.jsx'))
+const NotesManager = lazy(() => import('./admin/NotesManager.jsx'))
 const SkillsManager = lazy(() => import('./admin/SkillsManager.jsx'))
 
 const ProtectedRoute = ({ children }) => {
@@ -38,6 +41,8 @@ function App() {
           <Route element={<Layout />}>
             <Route path='/' element={<Home />} />
             <Route path='/projects' element={<Projects />} />
+            <Route path='/notes' element={<Notes />} />
+            <Route path='/notes/:slug' element={<NoteDetail />} />
             <Route path='/skills' element={<Skills />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/test-supabase' element={<SupabaseTest />} />
@@ -47,6 +52,7 @@ function App() {
           <Route element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/admin/projects' element={<ProjectsManager />} />
+            <Route path='/admin/notes' element={<NotesManager />} />
             <Route path='/admin/skills' element={<SkillsManager />} />
           </Route>
 

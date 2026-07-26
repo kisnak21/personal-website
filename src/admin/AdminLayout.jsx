@@ -1,6 +1,6 @@
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom'
 import { useAdmin } from '../context/AdminContext.jsx'
-import { LayoutDashboard, FileCode2, Code2, LogOut, Globe } from 'lucide-react'
+import { LayoutDashboard, FileCode2, BookOpen, Code2, LogOut, Globe } from 'lucide-react'
 
 export default function AdminLayout() {
   const { logout, isAuthenticated } = useAdmin()
@@ -17,6 +17,7 @@ export default function AdminLayout() {
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
     { name: 'Projects', path: '/admin/projects', icon: <FileCode2 size={20} /> },
+    { name: 'Notes', path: '/admin/notes', icon: <BookOpen size={20} /> },
     { name: 'Skills', path: '/admin/skills', icon: <Code2 size={20} /> },
   ]
 

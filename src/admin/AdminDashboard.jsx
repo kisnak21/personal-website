@@ -2,7 +2,8 @@ import { useAdmin } from '../context/AdminContext.jsx'
 import { useQuery } from '@tanstack/react-query'
 import { getProjects } from '../api/projects.js'
 import { getSkills } from '../api/skills.js'
-import { FolderGit2, Code2, ArrowRight } from 'lucide-react'
+import { getNotes } from '../api/notes.js'
+import { FolderGit2, Code2, BookOpen, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function AdminDashboard() {
@@ -18,8 +19,14 @@ export default function AdminDashboard() {
     queryFn: () => getSkills(),
   })
 
+  const { data: notesData, isLoading: notesLoading } = useQuery({
+    queryKey: ['notes', { all: true }],
+    queryFn: () => getNotes({ all: true }),
+  })
+
   const projects = Array.isArray(projectsData) ? projectsData : (projectsData?.data || [])
   const skills = Array.isArray(skillsData) ? skillsData : (skillsData?.data || [])
+  const notes = Array.isArray(notesData) ? notesData : (notesData?.data || [])
 
   return (
     <div className="space-y-8">
@@ -30,7 +37,7 @@ export default function AdminDashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-surface-container border border-outline-variant rounded-lg p-6 flex flex-col h-full">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-3 bg-primary/10 text-primary rounded-lg">
@@ -49,6 +56,28 @@ export default function AdminDashboard() {
               className="inline-flex items-center gap-2 text-primary font-label-caps text-label-caps hover:underline"
             >
               Manage Projects <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+
+        <div className="bg-surface-container border border-outline-variant rounded-lg p-6 flex flex-col h-full">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-secondary/10 text-secondary rounded-lg">
+              <BookOpen size={24} />
+            </div>
+            <div>
+              <h2 className="font-headline-sm text-headline-sm text-on-surface">Notes</h2>
+              <p className="font-code-sm text-code-sm text-on-surface-variant">
+                {notesLoading ? 'Loading...' : `${notes?.length || 0} total notes`}
+              </p>
+            </div>
+          </div>
+          <div className="mt-auto">
+            <Link
+              to="/admin/notes"
+              className="inline-flex items-center gap-2 text-primary font-label-caps text-label-caps hover:underline"
+            >
+              Manage Notes <ArrowRight size={16} />
             </Link>
           </div>
         </div>

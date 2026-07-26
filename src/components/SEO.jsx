@@ -9,15 +9,18 @@ const SEO = ({
   author = 'Kresna S. Nugroho',
   keywords = 'Kresna Nugroho, Full Stack Developer, ICT Teacher, React Developer, Next.js, Node.js, Web Development, Portfolio',
 }) => {
+  const targetImage = image || '/og-image.png'
+  const targetUrl = url || 'https://kresna-portfolio.vercel.app'
+
   const fullTitle = title.includes('|')
     ? title
     : `${title} | Kresna S. Portfolio`
-  const fullUrl = url.startsWith('http')
-    ? url
-    : `https://kresna-portfolio.vercel.app${url}`
-  const fullImage = image.startsWith('http')
-    ? image
-    : `https://kresna-portfolio.vercel.app${image}`
+  const fullUrl = targetUrl.startsWith('http')
+    ? targetUrl
+    : `https://kresna-portfolio.vercel.app${targetUrl}`
+  const fullImage = targetImage.startsWith('http')
+    ? targetImage
+    : `https://kresna-portfolio.vercel.app${targetImage}`
 
   return (
     <Helmet>

@@ -25,6 +25,9 @@ export default defineConfig({
           if (id.includes('node_modules/lucide-react')) {
             return 'icons'
           }
+          if (id.includes('node_modules/react-markdown') || id.includes('node_modules/remark-gfm') || id.includes('node_modules/rehype-highlight')) {
+            return 'markdown'
+          }
           if (id.includes('/src/admin/')) {
             return 'admin'
           }
@@ -33,7 +36,7 @@ export default defineConfig({
     },
     target: 'esnext',
     minify: 'esbuild',
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 900,
   },
   server: {
     open: false,

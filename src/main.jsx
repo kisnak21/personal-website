@@ -7,6 +7,7 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 import { AdminProvider } from './context/AdminContext.jsx'
+import { ToastProvider } from './context/ToastContext.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,9 @@ createRoot(document.getElementById('root')).render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <AdminProvider>
-              <App />
+              <ToastProvider>
+                <App />
+              </ToastProvider>
             </AdminProvider>
           </BrowserRouter>
         </QueryClientProvider>

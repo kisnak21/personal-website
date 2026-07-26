@@ -92,7 +92,7 @@ export const ProjectForm = ({ project = null, onSuccess, onCancel }) => {
       if (result.error) {
         setError(result.error.message || 'An error occurred saving the project')
       } else {
-        queryClient.invalidateQueries(['projects'])
+        queryClient.invalidateQueries({ queryKey: ['projects'], exact: false })
         onSuccess?.()
       }
     },

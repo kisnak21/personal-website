@@ -20,7 +20,7 @@ export default function SkillsManager() {
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteSkill(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['skills'])
+      queryClient.invalidateQueries({ queryKey: ['skills'], exact: false })
     },
   })
 

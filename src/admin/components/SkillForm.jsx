@@ -33,7 +33,7 @@ export const SkillForm = ({ skill = null, onSuccess, onCancel }) => {
       if (result.error) {
         setError(result.error.message || 'An error occurred saving the skill')
       } else {
-        queryClient.invalidateQueries(['skills'])
+        queryClient.invalidateQueries({ queryKey: ['skills'], exact: false })
         onSuccess?.()
       }
     },
