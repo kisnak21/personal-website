@@ -1,4 +1,4 @@
-import avatarImg from '../assets/1.png'
+import avatarImg from '../assets/1.jpg'
 
 export const terminalLines = [
   { prefix: '$', text: 'npm run info', className: 'text-on-surface' },
