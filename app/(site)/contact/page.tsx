@@ -3,8 +3,29 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { contactIntro, socialProfiles, directEmail, meta } from '@/content/contactData'
-import { profile } from '@/content/homeData'
 import { useToast } from '@/context/ToastContext'
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const MAX_NAME_LENGTH = 100
+const MAX_MESSAGE_LENGTH = 5000
+
+function sanitizeSingleLine(value: string): string {
+  return value
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function sanitizeEmail(value: string): string {
+  return sanitizeSingleLine(value).toLowerCase()
+}
+
+function sanitizeMessage(value: string): string {
+  return value
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim()
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
@@ -19,6 +40,24 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const name = sanitizeSingleLine(formData.name)
+    const email = sanitizeEmail(formData.email)
+    const message = sanitizeMessage(formData.message)
+
+    if (name.length < 2 || name.length > MAX_NAME_LENGTH) {
+      showError(`Please enter a valid name (2-${MAX_NAME_LENGTH} characters).`)
+      return
+    }
+    if (!EMAIL_REGEX.test(email)) {
+      showError('Please enter a valid email address.')
+      return
+    }
+    if (message.length < 10 || message.length > MAX_MESSAGE_LENGTH) {
+      showError(`Message must be between 10 and ${MAX_MESSAGE_LENGTH} characters.`)
+      return
+    }
+
     if (!formEndpoint) {
       setStatus('error')
       return
@@ -26,10 +65,16 @@ export default function ContactPage() {
 
     setStatus('submitting')
     try {
+      const body = new FormData()
+      body.append('name', name)
+      body.append('email', email)
+      body.append('message', message)
+      body.append('_gotcha', '')
+
       const res = await fetch(formEndpoint, {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(e.currentTarget),
+        body,
       })
 
       if (res.ok) {
@@ -105,6 +150,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   placeholder='Your Full Name'
                   required
+                  maxLength={MAX_NAME_LENGTH}
                   className='w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/40 focus:border-primary smooth-transition'
                 />
               </div>
@@ -132,6 +178,7 @@ export default function ContactPage() {
                 onChange={handleChange}
                 placeholder='Write your project details or inquiry here...'
                 required
+                maxLength={MAX_MESSAGE_LENGTH}
                 rows={6}
                 className='w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/40 focus:border-primary smooth-transition resize-none'
               />
@@ -176,27 +223,6 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6'>
-        <div className='bg-secondary-container/10 border border-secondary/30 rounded-lg p-6 flex items-center gap-4'>
-          <div className='w-14 h-14 rounded-full overflow-hidden border-2 border-primary flex-shrink-0'>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={profile.avatar} alt={profile.name} className='w-full h-full object-cover' />
-          </div>
-          <div>
-            <h3 className='font-headline-sm text-headline-sm text-secondary mb-1'>Looking for my Resume?</h3>
-            <p className='text-on-surface-variant font-body-md text-body-md'>Download the latest version of my CV in PDF format for a complete overview of my experience.</p>
-          </div>
-        </div>
-        <a
-          href='/resume.pdf'
-          download
-          className='bg-surface-container border border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center gap-2 hover:border-primary smooth-transition'
-        >
-          <span className='material-symbols-outlined text-[28px] text-primary'>download</span>
-          <span className='font-code-sm text-code-sm text-on-surface'>resume.pdf</span>
-        </a>
       </div>
     </div>
   )
