@@ -1,73 +1,106 @@
-interface JsonCodePanelProps {
-  data: unknown
+interface JsonSegment {
+  text: string
+  className: string
 }
 
-export default function JsonCodePanel({ data }: JsonCodePanelProps) {
+function buildLines(data: Record<string, unknown>): JsonSegment[][] {
+  const lines: JsonSegment[][] = []
+  lines.push([{ text: '{', className: 'text-on-surface' }])
+
+  Object.keys(data).forEach((key, keyIndex) => {
+    const isLastKey = keyIndex === Object.keys(data).length - 1
+    lines.push([
+      { text: '  ', className: '' },
+      { text: `"${key}"`, className: 'text-tertiary' },
+      { text: ': ', className: '' },
+      { text: '[', className: 'text-on-surface' },
+    ])
+
+    const items = data[key] as Record<string, unknown>[]
+    items.forEach((item, itemIndex) => {
+      const isLastItem = itemIndex === items.length - 1
+      lines.push([{ text: '    {', className: 'text-on-surface' }])
+
+      Object.keys(item).forEach((field, fieldIndex) => {
+        const isLastField = fieldIndex === Object.keys(item).length - 1
+        let value = item[field]
+        let valueClass = 'text-primary'
+
+        if (typeof value === 'boolean') {
+          value = String(value)
+          valueClass = 'text-secondary'
+        } else if (typeof value === 'number') {
+          value = String(value)
+          valueClass = 'text-secondary'
+        } else if (Array.isArray(value)) {
+          if (value.length === 0) {
+            value = '[]'
+          } else {
+            const arrLen = value.length
+            lines.push([
+              { text: '      ', className: '' },
+              { text: `"${field}"`, className: 'text-tertiary' },
+              { text: ': [', className: 'text-on-surface' },
+            ])
+            value.forEach((v: unknown, vi: number) => {
+              const isLastTech = vi === arrLen - 1
+              lines.push([
+                { text: '        ', className: '' },
+                { text: `"${String(v)}"${isLastTech ? '' : ','}`, className: 'text-primary' },
+              ])
+            })
+            lines.push([
+              { text: '      ]', className: 'text-on-surface' },
+              { text: isLastField ? '' : ',', className: '' },
+            ])
+            return
+          }
+        } else if (typeof value === 'string') {
+          value = `"${value}"`
+        }
+
+        lines.push([
+          { text: '      ', className: '' },
+          { text: `"${field}"`, className: 'text-tertiary' },
+          { text: ': ', className: '' },
+          { text: String(value), className: valueClass },
+          { text: isLastField ? '' : ',', className: '' },
+        ])
+      })
+      lines.push([
+        { text: `    }${isLastItem ? '' : ','}`, className: 'text-on-surface' },
+      ])
+    })
+    lines.push([
+      { text: `  ]${isLastKey ? '' : ','}`, className: 'text-on-surface' },
+    ])
+  })
+
+  lines.push([{ text: '}', className: 'text-on-surface' }])
+  return lines
+}
+
+export default function JsonCodePanel({ data }: { data: Record<string, unknown> }) {
+  const lines = buildLines(data)
+
   return (
-    <pre className='overflow-x-auto custom-scrollbar'>
-      <code className='text-[13px] leading-relaxed'>
-        <span className='text-primary'>const</span> <span className='text-tertiary'>data</span> ={' '}
-        <JsonTree value={data} indent={0} />
-      </code>
-    </pre>
+    <div className='flex gap-4'>
+      <div className='text-on-surface-variant/30 text-right select-none pr-4 border-r border-outline-variant'>
+        {lines.map((_, i) => (
+          <div key={i}>{i + 1}</div>
+        ))}
+      </div>
+      <div>
+        {lines.map((segments, i) => (
+          <div key={i} className='whitespace-pre'>
+            {segments.map((seg, j) => (
+              <span key={j} className={seg.className}>
+                {seg.text}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
   )
-}
-
-function JsonTree({ value, indent }: { value: unknown; indent: number }) {
-  const pad = '  '.repeat(indent)
-
-  if (value === null) return <span className='text-error'>null</span>
-
-  if (typeof value === 'string') {
-    return (
-      <span className='text-secondary'>&quot;{value}&quot;</span>
-    )
-  }
-
-  if (typeof value === 'number' || typeof value === 'boolean') {
-    return <span className='text-primary'>{String(value)}</span>
-  }
-
-  if (Array.isArray(value)) {
-    if (value.length === 0) return <span className='text-on-surface-variant'>[]</span>
-    return (
-      <span>
-        <span className='text-on-surface-variant'>[</span>
-        <br />
-        {value.map((item, i) => (
-          <span key={i}>
-            {pad}  <JsonTree value={item} indent={indent + 1} />
-            {i < value.length - 1 && <span className='text-on-surface-variant'>,</span>}
-            <br />
-          </span>
-        ))}
-        {pad}
-        <span className='text-on-surface-variant'>]</span>
-      </span>
-    )
-  }
-
-  if (typeof value === 'object') {
-    const entries = Object.entries(value as Record<string, unknown>)
-    if (entries.length === 0) return <span className='text-on-surface-variant'>{"{}"}</span>
-    return (
-      <span>
-        <span className='text-on-surface-variant'>{"{"}</span>
-        <br />
-        {entries.map(([key, val], i) => (
-          <span key={key}>
-            {pad}  <span className='text-tertiary'>&quot;{key}&quot;</span>
-            <span className='text-on-surface-variant'>: </span>
-            <JsonTree value={val} indent={indent + 1} />
-            {i < entries.length - 1 && <span className='text-on-surface-variant'>,</span>}
-            <br />
-          </span>
-        ))}
-        {pad}
-        <span className='text-on-surface-variant'>{"}"}</span>
-      </span>
-    )
-  }
-
-  return null
 }

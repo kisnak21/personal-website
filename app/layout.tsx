@@ -46,17 +46,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Theme anti-FOUC script
+  // Theme anti-FOUC script (default: dark, same as Vite version)
   const themeScript = `
-    let theme = window.localStorage.getItem('theme');
-    if (!theme) {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+    if (theme === 'dark') document.documentElement.classList.add('dark');
   `
 
   return (
@@ -69,7 +63,7 @@ export default function RootLayout({
         />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-on-surface custom-scrollbar`}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-body-md text-body-md antialiased bg-background text-on-background custom-scrollbar`}>
         <ThemeProvider>
           <QueryProvider>
             <ToastProvider>

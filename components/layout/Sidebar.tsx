@@ -29,7 +29,7 @@ export default function Sidebar() {
           EXPLORER
         </div>
         <div className='font-label-caps text-[10px] text-on-surface-variant/60'>
-          PORTFOLIO-NEXT
+          PORTFOLIO-V2
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export default function Sidebar() {
               href={item.to}
               className={`flex items-center gap-2 px-4 py-2 cursor-pointer font-code-sm text-code-sm smooth-transition ${
                 active
-                  ? 'border-l-2 border-primary bg-surface-variant text-primary hover:shadow-[inset_4px_0_10px_-5px_rgb(var(--color-primary)/0.3)]'
+                  ? 'border-l-2 border-primary bg-surface-variant text-primary hover:shadow-[inset_4px_0_10px_-5px_rgb(var(--color-primary-rgb)/0.3)]'
                   : 'border-l-2 border-transparent text-on-surface-variant hover:bg-surface-container-high hover:text-primary'
               }`}
               aria-current={active ? 'page' : undefined}

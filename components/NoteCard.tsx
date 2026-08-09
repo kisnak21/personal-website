@@ -26,6 +26,7 @@ export default function NoteCard({ note }: { note: Note }) {
             decoding='async'
             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
           />
+          <div className='absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity'></div>
         </div>
       ) : (
         <div className='h-10 bg-surface-container-highest flex items-center px-4 gap-2 border-b border-outline-variant'>

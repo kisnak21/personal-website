@@ -1,8 +1,12 @@
-export default function Loading({ label = 'Loading...' }: { label?: string }) {
+export default function Loading() {
   return (
-    <div className='flex items-center justify-center gap-2 py-16 text-on-surface-variant font-code-sm'>
-      <span className='material-symbols-outlined animate-spin text-2xl'>sync</span>
-      <span>{label}</span>
+    <div className='min-h-screen flex items-center justify-center bg-background'>
+      <div className='flex flex-col items-center gap-4'>
+        <div className='w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin'></div>
+        <span className='font-code-sm text-code-sm text-on-surface-variant animate-pulse'>
+          Initializing workspace...
+        </span>
+      </div>
     </div>
   )
 }

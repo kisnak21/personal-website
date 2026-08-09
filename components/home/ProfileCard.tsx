@@ -3,32 +3,32 @@ import { profile } from '@/content/homeData'
 
 export default function ProfileCard() {
   return (
-    <div className='bg-surface-container border border-outline-variant rounded p-6 flex flex-col items-center text-center shadow-xl'>
-      <div className='w-24 h-24 rounded-full overflow-hidden border-2 border-primary mb-4 relative'>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={profile.avatar} alt={profile.name} className='w-full h-full object-cover' />
+    <div className='col-span-12 lg:col-span-4 bg-surface-container rounded-lg border border-outline-variant p-6 flex flex-col justify-between shadow-lg smooth-transition hover:border-primary/50'>
+      <div>
+        <div className='w-16 h-16 rounded-full mb-4 overflow-hidden border-2 border-primary'>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className='w-full h-full object-cover'
+            alt='Kresna S. Nugroho'
+            src={profile.avatar}
+            loading='lazy'
+            decoding='async'
+          />
+        </div>
+        <h3 className='font-headline-sm text-headline-sm text-on-surface mb-1'>
+          {profile.name}
+        </h3>
+        <p className='text-on-surface-variant font-code-sm text-code-sm mb-4'>
+          Location: {profile.location}
+        </p>
       </div>
-      <h2 className='font-headline-md text-headline-md text-on-surface mb-1'>{profile.name}</h2>
-      <p className='font-code-sm text-code-sm text-on-surface-variant mb-4 flex items-center gap-1 justify-center'>
-        <span className='material-symbols-outlined text-[16px] text-tertiary'>location_on</span>
-        {profile.location}
-      </p>
-
-      <div className='w-full pt-4 border-t border-outline-variant flex flex-col gap-2'>
-        <a
-          href='/resume.pdf'
-          download
-          className='w-full py-2 bg-surface-container-high hover:bg-surface-variant text-on-surface border border-outline-variant rounded font-code-sm text-code-sm flex items-center justify-center gap-2 smooth-transition'
-        >
-          <span className='material-symbols-outlined text-[16px]'>download</span>
-          resume.pdf
-        </a>
+      <div className='space-y-2'>
         <Link
           href='/contact'
-          className='w-full py-2 bg-primary hover:bg-primary-container text-on-primary rounded font-label-caps text-label-caps flex items-center justify-center gap-2 smooth-transition'
+          className='w-full py-2 border border-outline-variant text-on-surface font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-variant smooth-transition active:scale-95'
         >
-          <span className='material-symbols-outlined text-[16px]'>mail</span>
-          GET_IN_TOUCH
+          <span className='material-symbols-outlined text-[16px]'>alternate_email</span>
+          HIRE ME
         </Link>
       </div>
     </div>

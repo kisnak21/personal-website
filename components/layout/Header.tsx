@@ -11,63 +11,64 @@ export default function Header() {
 
   return (
     <>
-      <header className='fixed top-0 left-0 right-0 h-16 z-50 bg-surface-container border-b border-outline-variant flex items-center justify-between px-margin-mobile md:px-margin-desktop'>
-        <div className='flex items-center gap-3'>
-          <a
-            href='#main-content'
-            className='sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:px-3 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded'
-          >
-            Skip to content
-          </a>
-          <Link href='/' className='flex items-center gap-2'>
-            <span className='text-primary font-display-lg text-lg font-bold tracking-tight'>
-              [KN]
+      <header className='flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full fixed top-0 z-50 bg-background border-b border-outline-variant' role='banner'>
+        <Link href='/' className='font-headline-md text-headline-md font-bold text-primary tracking-tighter whitespace-nowrap'>
+          <span className='md:hidden'>[KN]</span>
+          <span className='hidden md:inline'>[KN] Kresna S.</span>
+        </Link>
+
+        <button
+          type='button'
+          className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:font-code-sm focus:text-code-sm focus:rounded'
+          onClick={() => document.getElementById('main-content')?.focus()}
+        >
+          Skip to main content
+        </button>
+
+        <div className='flex items-center gap-3 md:gap-8'>
+          <div className='flex items-center gap-2'>
+            <span className='w-2 h-2 rounded-full bg-green-400 pulse-indicator flex-shrink-0' aria-hidden='true'></span>
+            <span className='hidden md:inline font-label-caps text-label-caps text-primary font-bold'>
+              Available for Work
             </span>
-            <span className='hidden sm:inline font-code-sm text-code-sm text-on-surface'>
-              Kresna S.
-            </span>
-          </Link>
-
-          <span className='ml-2 flex items-center gap-1.5 text-tertiary font-code-sm text-code-sm'>
-            <span className='w-2 h-2 rounded-full bg-tertiary pulse-indicator'></span>
-            Available for Work
-          </span>
-        </div>
-
-        <div className='flex items-center gap-2'>
-          <button
-            type='button'
-            onClick={toggleTheme}
-            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-            className='p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors'
-          >
-            <span className='material-symbols-outlined text-[20px]'>
-              {theme === 'light' ? 'dark_mode' : 'light_mode'}
-            </span>
-          </button>
-
-          <button
-            type='button'
-            onClick={() => setTerminalOpen(true)}
-            aria-label='Open terminal'
-            className='p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors'
-          >
-            <span className='material-symbols-outlined text-[20px]'>terminal</span>
-          </button>
-
-          <a
-            href='https://github.com/kisnak21/kresna-portfolio'
-            target='_blank'
-            rel='noopener noreferrer'
-            aria-label='GitHub repository'
-            className='p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors'
-          >
-            <span className='material-symbols-outlined text-[20px]'>code</span>
-          </a>
+          </div>
+          <div className='flex items-center gap-3 md:gap-4 text-on-surface-variant'>
+            <button
+              type='button'
+              aria-label={
+                theme === 'dark'
+                  ? 'Switch to light mode'
+                  : 'Switch to dark mode'
+              }
+              onClick={toggleTheme}
+              className='material-symbols-outlined text-[20px] md:text-[24px] hover:text-primary smooth-transition cursor-pointer'
+            >
+              {theme === 'dark' ? 'dark_mode' : 'light_mode'}
+            </button>
+            <button
+              type='button'
+              aria-label='Open terminal'
+              onClick={() => setTerminalOpen(true)}
+              className='material-symbols-outlined text-[20px] md:text-[24px] hover:text-primary smooth-transition cursor-pointer'
+            >
+              terminal
+            </button>
+            <a
+              href='https://github.com/kisnak21/kresna-portfolio'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label='View source code on GitHub (opens in new tab)'
+              className='material-symbols-outlined text-[20px] md:text-[24px] hover:text-primary smooth-transition cursor-pointer'
+            >
+              code
+            </a>
+          </div>
         </div>
       </header>
 
-      {terminalOpen && <TerminalOverlay onClose={() => setTerminalOpen(false)} />}
+      {terminalOpen && (
+        <TerminalOverlay onClose={() => setTerminalOpen(false)} />
+      )}
     </>
   )
 }

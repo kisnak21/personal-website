@@ -3,68 +3,107 @@
 import { useState, useEffect } from 'react'
 import { terminalLines } from '@/content/homeData'
 
+const TYPE_SPEED_MS = 40
+const LINE_PAUSE_MS = 200
+
 export default function TerminalWidget({ projectCount }: { projectCount: number }) {
-  const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [currentCharIndex, setCurrentCharIndex] = useState(0)
-  const [lines, setLines] = useState<typeof terminalLines>([])
+  const [typedLines, setTypedLines] = useState(terminalLines.map(() => ''))
+  const [extraLines, setExtraLines] = useState(['', '', ''])
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
-    if (currentLineIndex >= terminalLines.length) return
+    let cancelled = false
 
-    const targetLine = terminalLines[currentLineIndex]
-    const timer = setTimeout(
-      () => {
-        if (currentCharIndex < targetLine.text.length) {
-          setCurrentCharIndex((prev) => prev + 1)
-        } else {
-          setLines((prev) => [...prev, targetLine])
-          setCurrentLineIndex((prev) => prev + 1)
-          setCurrentCharIndex(0)
+    const run = async () => {
+      for (let i = 0; i < terminalLines.length; i++) {
+        const fullText = terminalLines[i].text
+        for (let c = 1; c <= fullText.length; c++) {
+          if (cancelled) return
+          await new Promise((r) => setTimeout(r, TYPE_SPEED_MS))
+          setTypedLines((prev) => {
+            const next = [...prev]
+            next[i] = fullText.slice(0, c)
+            return next
+          })
         }
-      },
-      currentCharIndex === 0 ? 200 : 40
-    )
+        await new Promise((r) => setTimeout(r, LINE_PAUSE_MS))
+      }
 
-    return () => clearTimeout(timer)
-  }, [currentLineIndex, currentCharIndex])
+      const projectStats = [
+        `> Projects Completed: ${projectCount}`,
+        `> Current Goal: Mastering Distributed Systems`,
+        `> Status: Ready to display!`,
+      ]
 
-  const activeLine = terminalLines[currentLineIndex]
+      for (let i = 0; i < projectStats.length; i++) {
+        const fullText = projectStats[i]
+        for (let c = 1; c <= fullText.length; c++) {
+          if (cancelled) return
+          await new Promise((r) => setTimeout(r, TYPE_SPEED_MS))
+          setExtraLines((prev) => {
+            const next = [...prev]
+            if (c === fullText.length) {
+              next[i] = fullText
+            } else {
+              next[i] = fullText.slice(0, c)
+            }
+            return next
+          })
+        }
+        await new Promise((r) => setTimeout(r, LINE_PAUSE_MS))
+      }
+
+      if (!cancelled) setDone(true)
+    }
+
+    run()
+    return () => {
+      cancelled = true
+    }
+  }, [projectCount])
 
   return (
-    <div className='bg-surface-container-lowest border border-outline-variant rounded p-6 font-code-sm text-code-sm overflow-hidden shadow-xl relative'>
-      <div className='absolute top-3 right-3 flex gap-2'>
-        <div className='terminal-header-dot bg-[#FF5F56]'></div>
-        <div className='terminal-header-dot bg-[#FFBD2E]'></div>
-        <div className='terminal-header-dot bg-[#27C93F]'></div>
+    <div className='col-span-12 lg:col-span-8 bg-surface-container rounded-lg border border-outline-variant overflow-hidden flex flex-col h-full shadow-lg'>
+      <div className='bg-surface-container-high px-4 py-2 flex items-center justify-between border-b border-outline-variant'>
+        <div className='flex items-center gap-2'>
+          <div className='flex gap-1.5'>
+            <div className='w-3 h-3 rounded-full bg-[#ff5f56]'></div>
+            <div className='w-3 h-3 rounded-full bg-[#ffbd2e]'></div>
+            <div className='w-3 h-3 rounded-full bg-[#27c93f]'></div>
+          </div>
+          <span className='ml-4 font-code-sm text-code-sm text-on-surface-variant'>
+            💡 Quick Stats (Interactive Terminal)
+          </span>
+        </div>
+        <span className='material-symbols-outlined text-on-surface-variant text-[18px]'>
+          terminal
+        </span>
       </div>
 
-      <div className='text-on-surface-variant mb-4 font-bold border-b border-outline-variant pb-2'>
-        TERMINAL_SESSION
-      </div>
-
-      <div className='space-y-2'>
-        {lines.map((line, i) => (
-          <div key={i} className={`flex items-start gap-2 ${line.indent ? 'pl-4' : ''}`}>
-            <span className='text-primary select-none'>{line.prefix}</span>
-            <span className={line.className}>{line.text}</span>
+      <div className='p-6 font-code-sm text-code-sm bg-surface-container-lowest flex-1 min-h-[200px]'>
+        {terminalLines.map((line, i) => (
+          <div
+            key={i}
+            className={`mb-2 ${line.indent ? 'ml-4' : ''} ${line.className}`}
+          >
+            <span className='text-tertiary'>{line.prefix}</span>{' '}
+            <span>{typedLines[i]}</span>
           </div>
         ))}
-
-        {activeLine && (
-          <div className={`flex items-start gap-2 ${activeLine.indent ? 'pl-4' : ''}`}>
-            <span className='text-primary select-none'>{activeLine.prefix}</span>
-            <span className={activeLine.className}>
-              {activeLine.text.substring(0, currentCharIndex)}
-              <span className='terminal-cursor'></span>
-            </span>
-          </div>
-        )}
-
-        {currentLineIndex >= terminalLines.length && (
-          <div className='pt-2 border-t border-outline-variant/40 space-y-1 text-on-surface-variant'>
-            <div>&gt; Status: Online &amp; Building</div>
-            <div>&gt; Projects Shipped: {projectCount}+</div>
-            <div>&gt; Ready for new opportunities</div>
+        <div className='mt-2'>
+          {extraLines.map((line, i) =>
+            line ? (
+              <div key={i} className={`mb-2 ml-4 ${i === 2 && done ? 'text-primary font-bold' : 'text-on-surface-variant'}`}>
+                <span className='text-tertiary'>{'>'}</span>{' '}
+                <span>{line}</span>
+              </div>
+            ) : null
+          )}
+        </div>
+        {done && (
+          <div className='mt-4 flex items-center'>
+            <span className='text-tertiary'>$</span>
+            <span className='terminal-cursor'></span>
           </div>
         )}
       </div>

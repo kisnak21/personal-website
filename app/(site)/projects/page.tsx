@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getProjects } from '@/lib/api/projects'
 import JsonCodePanel from '@/components/JsonCodePanel'
-import ProjectCard from '@/components/ProjectCard'
+import ProjectFileCard from '@/components/ProjectFileCard'
 import { seoData } from '@/content/seoData'
 
 export const metadata: Metadata = {
@@ -71,13 +71,49 @@ export default async function ProjectsPage() {
           {/* Rendered Cards Panel */}
           <div className='lg:col-span-7 flex flex-col gap-6'>
             <div className='flex items-center justify-between'>
-              <h2 className='font-headline-sm text-headline-sm text-primary'>Rendered Projects</h2>
+              <h2 className='font-headline-sm text-headline-sm text-primary'>
+                Rendered Projects
+              </h2>
+              <div className='hidden md:flex gap-2'>
+                <button
+                  type='button'
+                  aria-label='Grid view'
+                  className='p-2 border border-outline-variant bg-surface-container hover:bg-surface-container-high rounded transition-colors'
+                >
+                  <span
+                    className='material-symbols-outlined'
+                    aria-hidden='true'
+                  >
+                    grid_view
+                  </span>
+                </button>
+                <button
+                  type='button'
+                  aria-label='List view'
+                  className='p-2 border border-outline-variant bg-surface-container hover:bg-surface-container-high rounded transition-colors'
+                >
+                  <span
+                    className='material-symbols-outlined'
+                    aria-hidden='true'
+                  >
+                    list
+                  </span>
+                </button>
+              </div>
             </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               {projectsList.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
+                <ProjectFileCard key={project.id} project={project} index={i} />
               ))}
+              <div className='bg-surface-container border border-dashed border-outline-variant overflow-hidden flex flex-col items-center justify-center p-8 group hover:border-primary/50 cursor-pointer transition-all'>
+                <span className='material-symbols-outlined text-[32px] text-on-surface-variant group-hover:text-primary transition-colors'>
+                  add_circle
+                </span>
+                <span className='font-label-caps text-label-caps text-on-surface-variant mt-2 group-hover:text-primary'>
+                  Append New Entry
+                </span>
+              </div>
             </div>
           </div>
         </div>

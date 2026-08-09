@@ -1,88 +1,68 @@
-import Link from 'next/link'
+import { getTagClassName } from '@/content/projectsData'
 import type { Project } from '@/lib/types'
 
-export default function ProjectCard({ project, index }: { project: Project; index: number }) {
+export default function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className='bg-surface-container border border-outline-variant overflow-hidden flex flex-col group hover:border-primary transition-all duration-300'>
-      <div className='h-32 bg-surface-container-highest relative overflow-hidden'>
-        <div className='absolute top-2 left-2 flex gap-1 z-10'>
-          <div className='terminal-header-dot bg-[#FF5F56] opacity-60'></div>
-          <div className='terminal-header-dot bg-[#FFBD2E] opacity-60'></div>
-          <div className='terminal-header-dot bg-[#27C93F] opacity-60'></div>
-        </div>
-        {project.screenshot_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
+    <div className='group bg-surface-container rounded-lg border border-outline-variant overflow-hidden smooth-transition project-card-glow cursor-pointer'>
+      {project.screenshot_url && (
+        <div className='w-full h-48 overflow-hidden border-b border-outline-variant relative'>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={project.screenshot_url}
-            alt={project.screenshot_alt || `${project.title} preview`}
+            alt={project.screenshot_alt || project.title}
             loading='lazy'
             decoding='async'
             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
           />
-        ) : (
-          <div className='w-full h-full flex items-center justify-center'>
-            <span className='material-symbols-outlined text-[48px] text-tertiary/20'>
-              {project.icon}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className='p-4 flex-1 flex flex-col'>
-        <div className='flex justify-between items-start mb-2'>
-          <h3 className='font-headline-sm text-headline-sm text-on-surface'>{project.title}</h3>
-          <span className='font-code-sm text-code-sm text-tertiary'>
-            #{String(index + 1).padStart(2, '0')}
+        </div>
+      )}
+      <div className='p-6 h-full flex flex-col'>
+        <div className='mb-4 text-secondary group-hover:scale-110 smooth-transition origin-left'>
+          <span className='material-symbols-outlined text-[40px]'>
+            {project.icon}
           </span>
         </div>
-        <p className='text-on-surface-variant font-body-md text-body-md mb-4 flex-1'>
+        <h3 className='font-headline-sm text-headline-sm text-on-surface mb-2'>
+          {project.title}
+        </h3>
+        <p className='text-on-surface-variant font-body-md text-body-md mb-6 flex-1'>
           {project.description}
         </p>
-        <div className='flex flex-wrap gap-2 mb-4'>
+        <div className='flex flex-wrap gap-2 mb-6'>
           {(project.tech_stack || []).map((tech: string, i: number) => (
             <span
               key={tech}
-              className={`px-2 py-0.5 border font-label-caps text-[10px] rounded ${
-                ['border-primary/30 bg-primary/5 text-primary', 'border-secondary/30 bg-secondary/5 text-secondary', 'border-tertiary/30 bg-tertiary/5 text-tertiary'][i % 3]
-              }`}
+              className={`font-code-sm text-[11px] px-2 py-0.5 rounded border ${getTagClassName(i)}`}
             >
-              {tech.toUpperCase()}
+              {tech}
             </span>
           ))}
         </div>
-        <div className='flex gap-4 border-t border-outline-variant pt-4'>
-          {project.demo_url && (
-            <a
-              href={project.demo_url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-primary hover:text-primary-container flex items-center gap-1 font-code-sm text-code-sm transition-colors'
-            >
-              <span className='material-symbols-outlined text-[16px]'>play_circle</span>
-              Demo
-            </a>
-          )}
-          {project.github_url && (
-            <a
-              href={project.github_url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-code-sm text-code-sm transition-colors'
-            >
-              <span className='material-symbols-outlined text-[16px]'>terminal</span>
-              Source
-            </a>
-          )}
+        <div className='flex items-center gap-4'>
+          <a
+            href={project.github_url}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center gap-1 text-primary font-label-caps text-label-caps hover:underline'
+          >
+            View on GitHub
+            <span className='material-symbols-outlined text-[16px]'>
+              open_in_new
+            </span>
+          </a>
+          <a
+            href={project.demo_url}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center gap-1 text-secondary font-label-caps text-label-caps hover:underline'
+          >
+            Live Demo
+            <span className='material-symbols-outlined text-[16px]'>
+              open_in_new
+            </span>
+          </a>
         </div>
       </div>
     </div>
-  )
-}
-
-export function ProjectFileCardLink({ project, href }: { project: Project; href: string }) {
-  return (
-    <Link href={href} className='block'>
-      <ProjectCard project={project} index={0} />
-    </Link>
   )
 }
