@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import ThemeProvider from '@/context/ThemeContext'
@@ -20,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-code-sm',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kisnaknugroho.vercel.app'
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: {
     canonical: '/',
+    types: {
+      'application/rss+xml': '/feed.xml',
+    },
   },
   robots: {
     index: true,
@@ -52,7 +56,6 @@ export const metadata: Metadata = {
     creator: '@kresna_dev',
     title: seoData.home.title,
     description: seoData.home.description,
-    images: ['/og-image.png'],
   },
   icons: {
     icon: '/icon.svg',
@@ -105,13 +108,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#0f0f0f" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
         />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+        <Script
+          id="structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />

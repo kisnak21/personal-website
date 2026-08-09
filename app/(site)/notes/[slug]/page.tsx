@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { getNoteBySlug } from '@/lib/api/notes'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
@@ -11,6 +13,8 @@ interface PageProps {
 
 export const revalidate = 60
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kisnaknugroho.vercel.app'
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const note = await getNoteBySlug(slug)
@@ -19,7 +23,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Note Not Found', robots: { index: false } }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'
   const description = (note.excerpt || note.content.substring(0, 160))
     .replace(/[#*`>\[\]!-]/g, '')
     .replace(/\s+/g, ' ')
@@ -37,13 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: note.title,
       description,
       publishedTime: note.created_at,
-      images: note.cover_image_url ? [note.cover_image_url] : ['/og-image.png'],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: note.title,
-      description,
-      images: note.cover_image_url ? [note.cover_image_url] : ['/og-image.png'],
+      modifiedTime: note.updated_at,
     },
   }
 }
@@ -62,7 +59,27 @@ export default async function NoteDetailPage({ params }: PageProps) {
 
   return (
     <>
-      {/* Editor Tab Strip */}
+      <Script
+        id="blogposting-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: note.title,
+            description: note.excerpt || note.content.substring(0, 160),
+            image: note.cover_image_url
+              ? [note.cover_image_url]
+              : [`${siteUrl}/og-image.png`],
+            datePublished: note.created_at,
+            dateModified: note.updated_at || note.created_at,
+            author: { '@id': `${siteUrl}/#person` },
+            publisher: { '@id': `${siteUrl}/#person` },
+            mainEntityOfPage: `${siteUrl}/notes/${note.slug}`,
+            keywords: (note.tags || []).join(', '),
+          }),
+        }}
+      />
       <div className='flex bg-surface-container-low border-b border-outline-variant h-10 items-center px-margin-mobile md:px-margin-desktop'>
         <div className='bg-surface px-4 h-full flex items-center gap-2 border-r border-outline-variant border-t-2 border-t-primary'>
           <span className='material-symbols-outlined text-primary text-[14px]'>article</span>
@@ -122,10 +139,11 @@ export default async function NoteDetailPage({ params }: PageProps) {
 
         {note.cover_image_url && (
           <div className='mb-10 rounded border border-outline-variant overflow-hidden bg-surface-container'>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={note.cover_image_url}
               alt={note.cover_image_alt || note.title}
+              width={1200}
+              height={450}
               className='w-full max-h-[450px] object-cover'
             />
           </div>

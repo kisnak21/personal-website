@@ -46,6 +46,7 @@ export default function TerminalOverlay({ onClose }: { onClose: () => void }) {
       if (e.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handleKey)
+    inputRef.current?.focus()
     return () => window.removeEventListener('keydown', handleKey)
   }, [onClose])
 
@@ -85,6 +86,9 @@ export default function TerminalOverlay({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <div
+        role='dialog'
+        aria-modal='true'
+        aria-label='Terminal'
         className='w-full max-w-2xl bg-surface-container-lowest border border-outline-variant rounded shadow-2xl overflow-hidden'
         onClick={(e) => e.stopPropagation()}
       >
@@ -139,6 +143,7 @@ export default function TerminalOverlay({ onClose }: { onClose: () => void }) {
             type='text'
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            aria-label='Terminal command input'
             className='flex-1 bg-transparent text-on-surface font-code-sm text-code-sm focus:outline-none'
             placeholder='type a command...'
             autoComplete='off'

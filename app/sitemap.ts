@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getNotes } from '@/lib/api/notes'
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kisnaknugroho.vercel.app'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [

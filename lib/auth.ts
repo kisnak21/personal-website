@@ -4,6 +4,13 @@ import { cookies } from 'next/headers'
 import type { Session } from './types'
 
 const secretKey = process.env.SESSION_SECRET
+
+if (!secretKey || secretKey.length < 32) {
+  throw new Error(
+    'SESSION_SECRET is missing or too short. Set it in .env (e.g. openssl rand -base64 32).'
+  )
+}
+
 const key = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: JWTPayload) {

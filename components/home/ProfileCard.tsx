@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { profile } from '@/content/homeData'
 
@@ -6,13 +7,13 @@ export default function ProfileCard() {
     <div className='col-span-12 lg:col-span-4 bg-surface-container rounded-lg border border-outline-variant p-6 flex flex-col justify-between shadow-lg smooth-transition hover:border-primary/50'>
       <div>
         <div className='w-16 h-16 rounded-full mb-4 overflow-hidden border-2 border-primary'>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             className='w-full h-full object-cover'
             alt='Kresna S. Nugroho'
             src={profile.avatar}
-            loading='lazy'
-            decoding='async'
+            width={64}
+            height={64}
+            priority
           />
         </div>
         <h3 className='font-headline-sm text-headline-sm text-on-surface mb-1'>

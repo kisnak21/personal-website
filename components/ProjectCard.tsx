@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getTagClassName } from '@/content/projectsData'
 import type { Project } from '@/lib/types'
 
@@ -6,13 +7,12 @@ export default function ProjectCard({ project }: { project: Project }) {
     <div className='group bg-surface-container rounded-lg border border-outline-variant overflow-hidden smooth-transition project-card-glow cursor-pointer'>
       {project.screenshot_url && (
         <div className='w-full h-48 overflow-hidden border-b border-outline-variant relative'>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={project.screenshot_url}
             alt={project.screenshot_alt || project.title}
-            loading='lazy'
-            decoding='async'
-            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+            fill
+            sizes='(max-width: 768px) 100vw, 33vw'
+            className='object-cover group-hover:scale-105 transition-transform duration-500'
           />
         </div>
       )}

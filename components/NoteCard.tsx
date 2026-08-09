@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getTagClassName } from '@/content/projectsData'
 import type { Note } from '@/lib/types'
@@ -18,13 +19,12 @@ export default function NoteCard({ note }: { note: Note }) {
     <div className='bg-surface-container border border-outline-variant overflow-hidden flex flex-col group hover:border-primary transition-all duration-300'>
       {note.cover_image_url ? (
         <div className='h-44 bg-surface-container-highest relative overflow-hidden'>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={note.cover_image_url}
             alt={note.cover_image_alt || note.title}
-            loading='lazy'
-            decoding='async'
-            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+            fill
+            sizes='(max-width: 768px) 100vw, 33vw'
+            className='object-cover group-hover:scale-105 transition-transform duration-500'
           />
           <div className='absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity'></div>
         </div>

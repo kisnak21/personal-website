@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getTagClassName } from '@/content/projectsData'
 import type { Project } from '@/lib/types'
 
@@ -11,13 +12,12 @@ export default function ProjectFileCard({ project, index }: { project: Project; 
           <div className='terminal-header-dot bg-[#27C93F] opacity-60'></div>
         </div>
         {project.screenshot_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={project.screenshot_url}
             alt={project.screenshot_alt || `${project.title} preview`}
-            loading='lazy'
-            decoding='async'
-            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+            fill
+            sizes='(max-width: 768px) 100vw, 25vw'
+            className='object-cover group-hover:scale-105 transition-transform duration-500'
           />
         ) : (
           <div className='w-full h-full flex items-center justify-center'>
