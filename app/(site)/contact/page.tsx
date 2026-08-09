@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import Link from 'next/link'
 import { contactIntro, socialProfiles, directEmail, meta } from '@/content/contactData'
 import { profile } from '@/content/homeData'
 import { useToast } from '@/context/ToastContext'

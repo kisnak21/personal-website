@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSkillsAdmin } from '@/hooks/useAdminQueries'
 import { SkillForm } from '@/components/admin/SkillForm'
+import type { Skill } from '@/lib/types'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useToast } from '@/context/ToastContext'
 
@@ -11,7 +12,7 @@ export default function SkillsManagerPage() {
   const queryClient = useQueryClient()
   const { success: toastSuccess, error: toastError } = useToast()
   const [isEditing, setIsEditing] = useState(false)
-  const [currentSkill, setCurrentSkill] = useState<any>(null)
+  const [currentSkill, setCurrentSkill] = useState<Skill | null>(null)
 
   const { data: skills = [], isLoading, error } = useSkillsAdmin()
 
@@ -32,7 +33,7 @@ export default function SkillsManagerPage() {
     onError: (err: Error) => toastError(err.message)
   })
 
-  const handleEdit = (skill: any) => {
+  const handleEdit = (skill: Skill) => {
     setCurrentSkill(skill)
     setIsEditing(true)
   }

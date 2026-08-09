@@ -56,7 +56,7 @@ export function ImageUploader({ slug, currentImage, onImageUpload, onImageDelete
       } else {
         onImageUpload(result.url)
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred during upload')
     } finally {
       setIsUploading(false)

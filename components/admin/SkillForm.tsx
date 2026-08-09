@@ -25,6 +25,7 @@ export function SkillForm({ skill = null, onSuccess, onCancel }: SkillFormProps)
 
   useEffect(() => {
     if (skill) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         name: skill.name || '',
         category: skill.category || 'frontend',

@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
       const secret = new TextEncoder().encode(process.env.SESSION_SECRET)
       await jwtVerify(sessionCookie, secret, { algorithms: ['HS256'] })
       return NextResponse.next()
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL('/admin', request.url))
     }
   }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useProjectsAdmin } from '@/hooks/useAdminQueries'
 import { ProjectForm } from '@/components/admin/ProjectForm'
+import type { Project } from '@/lib/types'
 import { Plus, Pencil, Trash2, ExternalLink } from 'lucide-react'
 import { useToast } from '@/context/ToastContext'
 
@@ -11,7 +12,7 @@ export default function ProjectsManagerPage() {
   const queryClient = useQueryClient()
   const { success: toastSuccess, error: toastError } = useToast()
   const [isEditing, setIsEditing] = useState(false)
-  const [currentProject, setCurrentProject] = useState<any>(null)
+  const [currentProject, setCurrentProject] = useState<Project | null>(null)
 
   const { data: projects = [], isLoading, error } = useProjectsAdmin()
 
@@ -32,7 +33,7 @@ export default function ProjectsManagerPage() {
     onError: (err: Error) => toastError(err.message)
   })
 
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: Project) => {
     setCurrentProject(project)
     setIsEditing(true)
   }

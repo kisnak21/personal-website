@@ -100,10 +100,13 @@ export default function TerminalOverlay({ onClose }: { onClose: () => void }) {
     [history, onClose]
   )
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    runCommand(input)
-    setInput('')
+  const handleKeyDownInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.stopPropagation()
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      runCommand(input)
+      setInput('')
+    }
   }
 
   return (
@@ -143,7 +146,7 @@ export default function TerminalOverlay({ onClose }: { onClose: () => void }) {
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.stopPropagation()}
+              onKeyDown={handleKeyDownInput}
               placeholder='Type a command...'
               className='flex-1 bg-transparent outline-none placeholder:text-on-surface-variant/40'
               aria-label='Terminal command input'

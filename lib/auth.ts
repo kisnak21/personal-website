@@ -1,10 +1,12 @@
 import { SignJWT, jwtVerify } from 'jose'
+import type { JWTPayload } from 'jose'
 import { cookies } from 'next/headers'
+import type { Session } from './types'
 
 const secretKey = process.env.SESSION_SECRET
 const key = new TextEncoder().encode(secretKey)
 
-export async function encrypt(payload: any) {
+export async function encrypt(payload: JWTPayload) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -12,18 +14,18 @@ export async function encrypt(payload: any) {
     .sign(key)
 }
 
-export async function decrypt(input: string): Promise<any> {
+export async function decrypt(input: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(input, key, {
       algorithms: ['HS256'],
     })
     return payload
-  } catch (error) {
+  } catch {
     return null
   }
 }
 
-export async function login(apiKeyData: any) {
+export async function login(apiKeyData: { id: string; name: string }) {
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   const session = await encrypt({ id: apiKeyData.id, name: apiKeyData.name })
 
@@ -48,9 +50,15 @@ export async function logout() {
   })
 }
 
-export async function getSession() {
+export async function getSession(): Promise<Session | null> {
   const cookieStore = await cookies()
   const session = cookieStore.get('admin_session')?.value
   if (!session) return null
-  return await decrypt(session)
+
+  const payload = await decrypt(session)
+  if (!payload || typeof payload.id !== 'string' || typeof payload.name !== 'string') {
+    return null
+  }
+
+  return { id: payload.id, name: payload.name }
 }

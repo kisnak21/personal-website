@@ -56,7 +56,7 @@ export function NoteImageUploader({ slug, currentImage, onImageUpload, onImageDe
       } else {
         onImageUpload(result.url)
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred during upload')
     } finally {
       setIsUploading(false)

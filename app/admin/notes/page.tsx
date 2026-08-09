@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotesAdmin } from '@/hooks/useAdminQueries'
 import { NoteForm } from '@/components/admin/NoteForm'
+import type { Note } from '@/lib/types'
 import { Plus, Pencil, Trash2, Search, ExternalLink, Calendar } from 'lucide-react'
 import { useToast } from '@/context/ToastContext'
 
@@ -11,7 +12,7 @@ export default function NotesManagerPage() {
   const queryClient = useQueryClient()
   const { success: toastSuccess, error: toastError } = useToast()
   const [isEditing, setIsEditing] = useState(false)
-  const [selectedNote, setSelectedNote] = useState<any>(null)
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPublished, setFilterPublished] = useState('all')
 
@@ -34,7 +35,7 @@ export default function NotesManagerPage() {
     onError: (err: Error) => toastError(err.message)
   })
 
-  const handleEdit = (note: any) => {
+  const handleEdit = (note: Note) => {
     setSelectedNote(note)
     setIsEditing(true)
   }

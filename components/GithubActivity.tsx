@@ -51,7 +51,7 @@ export default function GithubActivity() {
         const data = await res.json()
         const contributions = data.contributions || []
         const last84 = contributions.slice(-84)
-        const yearlyTotal = data.total?.lastYear || contributions.reduce((acc: number, d: any) => acc + d.count, 0)
+        const yearlyTotal = data.total?.lastYear || contributions.reduce((acc: number, d: ContributionDay) => acc + d.count, 0)
 
         if (!cancelled) {
           setDays(last84)
@@ -59,7 +59,7 @@ export default function GithubActivity() {
           setStatus('ready')
           localStorage.setItem(CACHE_KEY, JSON.stringify({ days: last84, total: yearlyTotal, fetchedAt: Date.now() }))
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setStatus('error')
         }

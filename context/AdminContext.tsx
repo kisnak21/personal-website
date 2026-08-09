@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface AdminUser {
   name: string
@@ -9,31 +10,23 @@ interface AdminUser {
 interface AdminContextType {
   isAuthenticated: boolean
   user: AdminUser | null
-  loading: boolean
   login: (key: string) => Promise<{ success: boolean; error: string | null }>
   logout: () => Promise<void>
-  checkSession: () => void
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined)
 
+function hasSessionCookie(): boolean {
+  if (typeof window === 'undefined') return false
+  return document.cookie.includes('admin_session=')
+}
+
 export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(hasSessionCookie)
   const [user, setUser] = useState<AdminUser | null>(null)
-  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-  const checkSession = () => {
-    // Basic cookie check purely for client UI state (actual security is server-side via middleware)
-    const hasSession = document.cookie.includes('admin_session=')
-    setIsAuthenticated(hasSession)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    checkSession()
-  }, [])
-
-  const login = async (key: string) => {
+  const login = useCallback(async (key: string) => {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -50,20 +43,24 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       } else {
         return { success: false, error: data.error || 'Invalid admin key' }
       }
-    } catch (error: any) {
-      return { success: false, error: error.message || 'Authentication failed' }
+    } catch (error: unknown) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Authentication failed',
+      }
     }
-  }
+  }, [])
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
     setIsAuthenticated(false)
     setUser(null)
-    window.location.href = '/'
-  }
+    router.push('/')
+    router.refresh()
+  }, [router])
 
   return (
-    <AdminContext.Provider value={{ isAuthenticated, user, loading, login, logout, checkSession }}>
+    <AdminContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AdminContext.Provider>
   )

@@ -2,12 +2,17 @@ import Link from 'next/link'
 import { getTagClassName } from '@/content/projectsData'
 import type { Note } from '@/lib/types'
 
-export default function NoteCard({ note }: { note: Note }) {
-  const formattedDate = new Date(note.created_at || Date.now()).toLocaleDateString('id-ID', {
+function formatNoteDate(dateString?: string): string {
+  const date = dateString ? new Date(dateString) : new Date()
+  return date.toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   })
+}
+
+export default function NoteCard({ note }: { note: Note }) {
+  const formattedDate = formatNoteDate(note.created_at)
 
   return (
     <div className='bg-surface-container border border-outline-variant overflow-hidden flex flex-col group hover:border-primary transition-all duration-300'>

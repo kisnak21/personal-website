@@ -50,6 +50,7 @@ export function NoteForm({ note = null, onSuccess, onCancel }: NoteFormProps) {
 
   useEffect(() => {
     if (note) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         title: note.title || '',
         slug: note.slug || '',

@@ -42,6 +42,7 @@ export function ProjectForm({ project = null, onSuccess, onCancel }: ProjectForm
 
   useEffect(() => {
     if (project) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         title: project.title || '',
         slug: project.slug || '',
