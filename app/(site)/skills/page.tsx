@@ -14,6 +14,9 @@ import type { Skill } from '@/lib/types'
 export const metadata: Metadata = {
   title: seoData.skills.title,
   description: seoData.skills.description,
+  alternates: {
+    canonical: '/skills',
+  },
 }
 
 export const revalidate = 60

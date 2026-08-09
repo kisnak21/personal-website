@@ -36,3 +36,6 @@ next-env.d.ts
 *.sw?
 
 draft-notes/
+
+# Supabase migrations (schema + seed dengan admin key hash)
+supabase/migrations/

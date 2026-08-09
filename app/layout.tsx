@@ -20,6 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-code-sm',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'
+
 export const metadata: Metadata = {
   title: {
     template: '%s | Kresna S. Portfolio',
@@ -28,17 +30,63 @@ export const metadata: Metadata = {
   description: seoData.home.description,
   keywords: seoData.home.keywords,
   authors: [{ name: 'Kresna S. Nugroho' }],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'),
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
+    url: siteUrl,
     siteName: 'Kresna S. Portfolio',
+    title: seoData.home.title,
+    description: seoData.home.description,
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@kresna_dev',
+    title: seoData.home.title,
+    description: seoData.home.description,
+    images: ['/og-image.png'],
   },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
+}
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Kresna S. Nugroho',
+      url: siteUrl,
+      jobTitle: 'Full-Stack Developer & ICT Teacher',
+      description: seoData.home.description,
+      image: `${siteUrl}/avatar.jpg`,
+      sameAs: [
+        'https://github.com/kisnak21',
+        'https://linkedin.com/in/kresnasatyanugroho',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: seoData.home.title,
+      description: seoData.home.description,
+      publisher: { '@id': `${siteUrl}/#person` },
+      inLanguage: 'en',
+    },
+  ],
 }
 
 export default function RootLayout({
@@ -56,12 +104,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#0f0f0f" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
         />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-body-md text-body-md antialiased bg-background text-on-background custom-scrollbar`}>
         <ThemeProvider>

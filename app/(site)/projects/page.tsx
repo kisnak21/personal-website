@@ -7,6 +7,9 @@ import { seoData } from '@/content/seoData'
 export const metadata: Metadata = {
   title: seoData.projects.title,
   description: seoData.projects.description,
+  alternates: {
+    canonical: '/projects',
+  },
 }
 
 export const revalidate = 60

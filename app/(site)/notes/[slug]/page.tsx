@@ -16,17 +16,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const note = await getNoteBySlug(slug)
 
   if (!note) {
-    return { title: 'Note Not Found' }
+    return { title: 'Note Not Found', robots: { index: false } }
   }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kresna-portfolio.vercel.app'
+  const description = (note.excerpt || note.content.substring(0, 160))
+    .replace(/[#*`>\[\]!-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
 
   return {
     title: note.title,
-    description: note.excerpt || note.content.substring(0, 160),
+    description,
+    alternates: {
+      canonical: `/notes/${note.slug}`,
+    },
     openGraph: {
       type: 'article',
+      url: `${siteUrl}/notes/${note.slug}`,
       title: note.title,
-      description: note.excerpt || note.content.substring(0, 160),
+      description,
       publishedTime: note.created_at,
+      images: note.cover_image_url ? [note.cover_image_url] : ['/og-image.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: note.title,
+      description,
       images: note.cover_image_url ? [note.cover_image_url] : ['/og-image.png'],
     },
   }
