@@ -6,6 +6,8 @@ import ToastProvider from '@/context/ToastContext'
 import QueryProvider from '@/context/QueryProvider'
 import { seoData } from '@/content/seoData'
 
+import { AdminProvider } from '@/context/AdminContext'
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -70,7 +72,9 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <ToastProvider>
-              {children}
+              <AdminProvider>
+                {children}
+              </AdminProvider>
             </ToastProvider>
           </QueryProvider>
         </ThemeProvider>
