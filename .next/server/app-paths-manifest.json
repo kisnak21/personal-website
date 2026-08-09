@@ -1,0 +1,22 @@
+{
+  "/(site)/contact/page": "app/(site)/contact/page.js",
+  "/(site)/notes/[slug]/page": "app/(site)/notes/[slug]/page.js",
+  "/(site)/notes/page": "app/(site)/notes/page.js",
+  "/(site)/page": "app/(site)/page.js",
+  "/(site)/projects/page": "app/(site)/projects/page.js",
+  "/(site)/skills/page": "app/(site)/skills/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/admin/notes/[id]/route": "app/api/admin/notes/[id]/route.js",
+  "/api/admin/notes/route": "app/api/admin/notes/route.js",
+  "/api/admin/projects/[id]/route": "app/api/admin/projects/[id]/route.js",
+  "/api/admin/projects/route": "app/api/admin/projects/route.js",
+  "/api/admin/settings/route": "app/api/admin/settings/route.js",
+  "/api/admin/skills/[id]/route": "app/api/admin/skills/[id]/route.js",
+  "/api/admin/skills/route": "app/api/admin/skills/route.js",
+  "/api/admin/upload/route": "app/api/admin/upload/route.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+}

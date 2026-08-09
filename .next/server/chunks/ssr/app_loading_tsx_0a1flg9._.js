@@ -1,0 +1,3 @@
+module.exports=[63588,a=>{"use strict";var b=a.i(7997);function c({label:a="Loading..."}){return(0,b.jsxs)("div",{className:"flex items-center justify-center gap-2 py-16 text-on-surface-variant font-code-sm",children:[(0,b.jsx)("span",{className:"material-symbols-outlined animate-spin text-2xl",children:"sync"}),(0,b.jsx)("span",{children:a})]})}a.s(["default",0,function(){return(0,b.jsx)(c,{label:"Loading workspace..."})}],63588)},45538,function(a){a.n(a.i(63588))}];
+
+//# sourceMappingURL=app_loading_tsx_0a1flg9._.js.map
